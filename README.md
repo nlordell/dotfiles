@@ -5,10 +5,22 @@ machines.
 
 ## Installation
 
+Clone the repository and run the appropriate installation script:
+
+### Unix
+
+```sh
+./install.sh
 ```
-$ git clone https://github.com/nlordell/dotfiles ~/.dotfiles
-$ # on Unix
-$ ~/.dotfiles/install.sh
-$ # on Windows
-$ ~/.dotfiles/install.ps1
+
+### Windows
+
+```powershell
+powershell -File .\install.ps1
 ```
+
+## Notes
+
+### Neovim
+
+Plugins get installed to `$XDG_DATA_HOME/nvim/plugged`.
