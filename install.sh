@@ -12,8 +12,9 @@ dotlink() {
 
     if [ ! -e "$dst" ]; then
         ln -s "$src" "$dst"
+        echo "linked '$src' to '$dst'"
     else
-        echo "skipping $dst: already exists." >&2
+        echo "skipping $1: '$dst' already exists." >&2
     fi
 }
 
