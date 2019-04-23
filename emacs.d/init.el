@@ -10,17 +10,20 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 
+(setq-default indent-tabs-mode nil)
+
 (setq
  create-lockfiles                   nil
- backup-directory-alist            `((".*" . ,(expand-data-file-name "backup")))
- auto-save-file-name-transforms    `((".*" ,(expand-data-file-name "auto-save-list") t)))
+ backup-directory-alist            `((".*" . ,(expand-data-file-name "backup/")))
+ auto-save-list-file-prefix        (expand-data-file-name "autosave/.saves-")
+ auto-save-file-name-transforms    `((".*" ,(expand-data-file-name "autosave/") t)))
 
 (setq custom-file (expand-data-file-name "custom.el"))
 (load custom-file 'noerror)
 
 ;;; Packages
 (setq
- package-user-dir    (expand-data-file-name "elpa")
+ package-user-dir    (expand-data-file-name "elpa/")
  package-archives    '(("gnu" . "https://elpa.gnu.org/packages/")
                        ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
