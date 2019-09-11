@@ -21,6 +21,10 @@
 (setq custom-file (expand-data-file-name "custom.el"))
 (load custom-file 'noerror)
 
+(setq
+ inhibit-startup-message    t
+ initial-scratch-message    nil)
+
 ;;; Packages
 (setq
  package-user-dir    (expand-data-file-name "elpa/")
