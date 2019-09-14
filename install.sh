@@ -22,5 +22,8 @@ mkdir -p "$HOME/.config"
 
 dotlink "config/nvim"
 dotlink "emacs.d"
+dotlink "zshenv"
+dotlink "config/zsh"
 
 nvim +PlugInstall +qall
+zsh -c 'sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
