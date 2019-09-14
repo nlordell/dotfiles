@@ -64,6 +64,9 @@ plugins=()
 
 source $ZSH/oh-my-zsh.sh
 
+# Add user-defined completion functions
+fpath=("$HOME/.local/share/zsh/site-functions" $fpath)
+
 autoload -Uz compinit promptinit
 compinit
 promptinit
