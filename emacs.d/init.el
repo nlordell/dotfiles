@@ -14,6 +14,7 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (show-paren-mode 1)
+(prefer-coding-system 'utf-8)
 
 (setq-default
  indent-tabs-mode nil
@@ -36,9 +37,11 @@
 
 ;;; Packaging
 (setq
- package-user-dir (expand-data-file-name "elpa/")
- package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                    ("melpa" . "https://melpa.org/packages/")))
+ package-user-dir           (expand-data-file-name "elpa/")
+ package-archives           '(("melpa" . "https://stable.melpa.org/packages/")
+                              ("gnu"   . "https://elpa.gnu.org/packages/"))
+ package-archive-priorities '(("melpa" . 1)
+                              ("gnu"   . 0)))
 (package-initialize)
 
 (unless package-archive-contents
@@ -49,6 +52,50 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;;; Packages
 (use-package evil
   :config
   (evil-mode 1))
+
+(use-package which-key
+  :config
+  (which-key-mode))
+
+;;; Theming
+(use-package doom-themes
+  :defer t)
+(use-package circadian
+  :config
+  (setq
+   calendar-latitude  52.5
+   calendar-longitude 13.4
+   circadian-themes   '((:sunrise . doom-nord-light)
+                        (:sunset  . doom-one)))
+  (circadian-setup))
+
+;; TODO:
+;; - all-the-icons
+;; - hide-mode-line
+;; - neotree
+;; - display-line-num
+;; - dtrt-indent
+;; - smartparens
+;; - so-long
+;;;;
+;; - rust-mode
+;; - ivy
+;;   - counsel
+;;   - swipper
+;;   - avy
+;; - magit
+;; - org-*
+;;   - org-agenda
+;; - flycheck
+;; - dashboard
+;; - avy
+;;;;
+;; - fzf
+;; - ripgrep
+;; - mode line
+;; - evil goodies
+;; - split init.el
