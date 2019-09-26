@@ -3,15 +3,13 @@
 ;;; Personal init file mostly tailored towards Rust development
 
 ;;; Locals
-(defconst xdg-data-home
-  (or (getenv "XDG_DATA_HOME")
-      (expand-file-name ".local/share" (getenv "HOME")))
-  "XDG user-specific data directory")
-(defconst emacs-data-directory (expand-file-name "emacs" xdg-data-home)
-  "Root directory for user-specific Emacs data")
 (defun expand-data-file-name (name)
-  "Convert filename NAME to an absolute and canonicalized path rooted in the variable `emacs-data-directory'"
-  (expand-file-name name emacs-data-directory))
+  "Convert filename NAME to an absolute and canonicalized path rooted in $XDG_DATA_HOME/emacs"
+  ;; TODO(nlordell): fix for Windows
+  (let* ((xdg-data-home        (or (getenv "XDG_DATA_HOME")
+                                   (expand-file-name ".local/share" (getenv "HOME"))))
+         (emacs-data-directory (expand-file-name "emacs" xdg-data-home)))
+    (expand-file-name name emacs-data-directory)))
 
 ;;; Customization
 (menu-bar-mode -1)
