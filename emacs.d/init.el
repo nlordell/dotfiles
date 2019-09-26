@@ -1,15 +1,53 @@
-;;; package --- Main init file
+;;; package --- Init
 ;;; Commentary:
-;;; This is my init file
+;;; Personal init file mostly tailored towards Rust development
 
-;;; Code:
+;;; Locals
+(defconst xdg-data-home
+  (or (getenv "XDG_DATA_HOME")
+      (expand-file-name ".local/share" (getenv "HOME")))
+  "XDG user-specific data directory")
+(defconst emacs-data-directory (expand-file-name "emacs" xdg-data-home)
+  "Root directory for user-specific Emacs data")
+(defun expand-data-file-name (name)
+  "Convert filename NAME to an absolute and canonicalized path rooted in the variable `emacs-data-directory'"
+  (expand-file-name name emacs-data-directory))
 
-(add-to-list 'load-path (concat user-emacs-directory "elisp"))
+;;; Customization
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(show-paren-mode 1)
 
-(require 'base)
-(require 'base-theme)
-(require 'base-extensions)
-(require 'base-functions)
-(require 'base-global-keys)
+(setq-default indent-tabs-mode nil)
 
-(require 'lang-rust)
+(setq
+ create-lockfiles                   nil
+ backup-directory-alist            `((".*" . ,(expand-data-file-name "backup/")))
+ auto-save-list-file-prefix        (expand-data-file-name "autosave/.saves-")
+ auto-save-file-name-transforms    `((".*" ,(expand-data-file-name "autosave/") t)))
+
+(setq custom-file (expand-data-file-name "custom.el"))
+(load custom-file 'noerror)
+
+(setq
+ inhibit-startup-message    t
+ initial-scratch-message    nil)
+
+;;; Packages
+(setq
+ package-user-dir    (expand-data-file-name "elpa/")
+ package-archives    '(("gnu" . "https://elpa.gnu.org/packages/")
+                       ("melpa" . "https://melpa.org/packages/")))
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+(use-package evil
+  :config
+  (evil-mode 1))
