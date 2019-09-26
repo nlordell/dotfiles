@@ -5,9 +5,8 @@
 ;;; Locals
 (defun expand-data-file-name (name)
   "Convert filename NAME to an absolute and canonicalized path rooted in $XDG_DATA_HOME/emacs"
-  ;; TODO(nlordell): fix for Windows
-  (let* ((xdg-data-home        (or (getenv "XDG_DATA_HOME")
-                                   (expand-file-name ".local/share" (getenv "HOME"))))
+  ;; TODO: fix for Windows
+  (let* ((xdg-data-home        (or (getenv "XDG_DATA_HOME") "~/.local/share"))
          (emacs-data-directory (expand-file-name "emacs" xdg-data-home)))
     (expand-file-name name emacs-data-directory)))
 
@@ -16,26 +15,30 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 
-(setq-default indent-tabs-mode nil)
+(setq-default
+ indent-tabs-mode nil
+ tab-width        4)
 
 (setq
- create-lockfiles                   nil
- backup-directory-alist            `((".*" . ,(expand-data-file-name "backup/")))
- auto-save-list-file-prefix        (expand-data-file-name "autosave/.saves-")
- auto-save-file-name-transforms    `((".*" ,(expand-data-file-name "autosave/") t)))
+ mouse-yank-at-point     t
+ inhibit-startup-message t
+ initial-scratch-message nil)
+
+;;; Runtime Files
+(setq
+ create-lockfiles                nil
+ backup-directory-alist         `((".*" . ,(expand-data-file-name "backup/")))
+ auto-save-list-file-prefix     (expand-data-file-name "autosave/.saves-")
+ auto-save-file-name-transforms `((".*" ,(expand-data-file-name "autosave/") t)))
 
 (setq custom-file (expand-data-file-name "custom.el"))
 (load custom-file 'noerror)
 
+;;; Packaging
 (setq
- inhibit-startup-message    t
- initial-scratch-message    nil)
-
-;;; Packages
-(setq
- package-user-dir    (expand-data-file-name "elpa/")
- package-archives    '(("gnu" . "https://elpa.gnu.org/packages/")
-                       ("melpa" . "https://melpa.org/packages/")))
+ package-user-dir (expand-data-file-name "elpa/")
+ package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                    ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
 (unless package-archive-contents
