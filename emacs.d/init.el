@@ -11,14 +11,15 @@
     (expand-file-name name emacs-data-directory)))
 
 ;;; Customization
+(prefer-coding-system 'utf-8)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (show-paren-mode 1)
-(prefer-coding-system 'utf-8)
 
 (setq-default
- indent-tabs-mode nil
- tab-width        4)
+ indent-tabs-mode     nil
+ tab-width            4
+ display-line-numbers 'relative)
 
 (setq
  mouse-yank-at-point     t
@@ -77,7 +78,6 @@
 ;; - all-the-icons
 ;; - hide-mode-line
 ;; - neotree
-;; - display-line-num
 ;; - dtrt-indent
 ;; - smartparens
 ;; - so-long
