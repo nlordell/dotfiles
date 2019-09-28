@@ -13,10 +13,12 @@
 ;;; Packaging
 (setq
  package-user-dir           (expand-data-file-name "elpa/")
- package-archives           '(("melpa" . "https://stable.melpa.org/packages/")
-                              ("gnu"   . "https://elpa.gnu.org/packages/"))
- package-archive-priorities '(("melpa" . 1)
-                              ("gnu"   . 0)))
+ package-archives           '(("melpa-stable" . "https://stable.melpa.org/packages/")
+                              ("gnu"          . "https://elpa.gnu.org/packages/")
+                              ("melpa"        . "https://melpa.org/packages/"))
+ package-archive-priorities '(("melpa-stable" . 2)
+                              ("gnu"          . 1)
+                              ("melpa"        . 0)))
 (package-initialize)
 
 ;;; Customization
@@ -65,7 +67,9 @@
   (evil-mode 1)
   (use-package evil-collection
     :config
-    (evil-collection-init)))
+    (evil-collection-init))
+  (use-package evil-magit
+    :after magit))
 
 (use-package magit
   :bind ("C-x g" . 'magit-status))
@@ -106,7 +110,7 @@
 
 ;; TODO:
 ;;;;
-;; - rust-mode
+;; - rust-mode / rustic
 ;; - ivy
 ;;   - counsel
 ;;   - swipper
