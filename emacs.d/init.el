@@ -3,11 +3,16 @@
 ;;; Personal init file for Evil Rust development with some goodies
 
 ;;; Locals
+;; TODO: fix these for Windows
 (defun expand-data-file-name (name)
   "Convert filename NAME to an absolute and canonicalized path rooted in $XDG_DATA_HOME/emacs"
-  ;; TODO: fix for Windows
   (let* ((xdg-data-home        (or (getenv "XDG_DATA_HOME") "~/.local/share"))
          (emacs-data-directory (expand-file-name "emacs" xdg-data-home)))
+    (expand-file-name name emacs-data-directory)))
+(defun expand-cache-file-name (name)
+  "Convert the filename NAME to an absolte and canonicalized path rooted in $XDG_CACHE_DIR/emacs"
+  (let* ((xdg-cache-home       (or (getenv "XDG_CACHE_HOME") "~/.cache"))
+         (emacs-data-directory (expand-file-name "emacs" xdg-cache-home)))
     (expand-file-name name emacs-data-directory)))
 
 ;;; Packaging
