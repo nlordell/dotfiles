@@ -91,7 +91,9 @@
   :config
   (ivy-mode 1)
   (use-package counsel
-    :bind ("M-x"    . counsel-M-x)
+    :bind (("M-x"     . counsel-M-x)
+           ("C-c c p" . counsel-fzf)
+           ("C-c c r" . counsel-rg))
     :config
     (assq-delete-all 'counsel-M-x ivy-initial-inputs-alist)
     (use-package amx))
@@ -106,6 +108,8 @@
   :bind ([f8] . 'neotree-toggle)
   :init
   (setq
+   neo-autorefresh       nil
+   neo-smart-open        nil
    neo-theme             'icons
    neo-window-fixed-size nil)
   :config
@@ -118,7 +122,9 @@
 (use-package projectile
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
-  (setq projectile-completion-system 'ivy)
+  (setq
+   projectile-completion-system     'ivy
+   projectile-switch-project-action 'neotree-projectile-action)
   :config
   (projectile-mode +1))
 
