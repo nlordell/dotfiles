@@ -79,8 +79,13 @@
   (use-package evil-collection
     :config
     (evil-collection-init))
+  (use-package evil-commentary
+    :hook (prog-mode . evil-commentary-mode))
   (use-package evil-magit
-    :after magit))
+    :after magit)
+  (use-package evil-surround
+    :hook (prog-mode . evil-surround-mode))
+  (use-package org-evil))
 
 (use-package ivy
   :init
@@ -108,11 +113,11 @@
          ("C-x g l" . 'magit-log-all)))
 
 (use-package neotree
+  :pin melpa-unstable
   :bind ([f8] . 'neotree-toggle)
   :init
   (setq
-   neo-autorefresh       nil
-   neo-smart-open        nil
+   neo-smart-open        t
    neo-theme             'icons
    neo-window-fixed-size nil)
   :config
@@ -153,6 +158,9 @@
   :mode "\\.rs\\'"
   :init
   :config
+  ;; - rust-mode
+  ;;   - racer/cargo/ minor modes
+  ;;   - company/eldoc integration
   (use-package flycheck-rust
     :hook (flycheck-mode . flycheck-rust-setup)))
 
@@ -198,10 +206,6 @@
 ;;;;
 ;; - org-*
 ;;   - org-agenda
-;; - rust-mode
-;;   - racer/cargo/ minor modes
-;;   - company/eldoc integration
 ;;;;
 ;; - mode line
-;; - evil goodies
 ;; - split init.el
