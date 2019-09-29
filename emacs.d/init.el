@@ -48,7 +48,8 @@
  create-lockfiles                nil
  backup-directory-alist         `((".*" . ,(expand-data-file-name "backup/")))
  auto-save-list-file-prefix     (expand-data-file-name "autosave/.saves-")
- auto-save-file-name-transforms `((".*" ,(expand-data-file-name "autosave/") t)))
+ auto-save-file-name-transforms `((".*" ,(expand-data-file-name "autosave/") t))
+ recentf-save-file              (expand-cache-file-name "recentf"))
 
 (setq custom-file (expand-data-file-name "custom.el"))
 (load custom-file 'noerror)
@@ -96,7 +97,9 @@
            ("C-c c r" . counsel-rg))
     :config
     (assq-delete-all 'counsel-M-x ivy-initial-inputs-alist)
-    (use-package amx))
+    (use-package amx
+      :init
+      (setq amx-save-file (expand-cache-file-name "amx-items"))))
   (use-package swiper
     :bind ("C-s" . 'swiper)))
 
@@ -123,7 +126,9 @@
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   (setq
+   projectile-cache-file            (expand-cache-file-name "projectile.cache")
    projectile-completion-system     'ivy
+   projectile-known-projects-file   (expand-cache-file-name "projectile-bookmarks.eld")
    projectile-switch-project-action 'neotree-projectile-action)
   :config
   (projectile-mode +1))
@@ -196,11 +201,7 @@
 ;; - rust-mode
 ;;   - racer/cargo/ minor modes
 ;;   - company/eldoc integration
-;; - lose projectile/amx/recentf files
 ;;;;
-;; - fzf
-;; - projectile
-;; - ripgrep
 ;; - mode line
 ;; - evil goodies
 ;; - split init.el
