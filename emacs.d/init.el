@@ -18,12 +18,12 @@
 ;;; Packaging
 (setq
  package-user-dir           (expand-data-file-name "elpa/")
- package-archives           '(("melpa-stable" . "https://stable.melpa.org/packages/")
-                              ("gnu"          . "https://elpa.gnu.org/packages/")
-                              ("melpa"        . "https://melpa.org/packages/"))
- package-archive-priorities '(("melpa-stable" . 2)
-                              ("gnu"          . 1)
-                              ("melpa"        . 0)))
+ package-archives           '(("melpa"          . "https://stable.melpa.org/packages/")
+                              ("gnu"            . "https://elpa.gnu.org/packages/")
+                              ("melpa-unstable" . "https://melpa.org/packages/"))
+ package-archive-priorities '(("melpa"          . 2)
+                              ("gnu"            . 1)
+                              ("melpa-unstable" . 0)))
 (package-initialize)
 
 ;;; Customization
@@ -65,24 +65,62 @@
 ;; Interface
 (use-package all-the-icons)
 
+(use-package avy
+  :bind ("C-:" . avy-goto-char))
+
 (use-package evil
   :init
   (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
+  ;; TODO: right now this is causing use-package to load a bunch of stuff
+  ;; prematurely which is sub-optimal
   (use-package evil-collection
     :config
     (evil-collection-init))
   (use-package evil-magit
     :after magit))
 
+(use-package ivy
+  :init
+  (setq
+   ivy-use-virtual-buffers      t
+   enable-recursive-minibuffers t
+   ivy-re-builders-alist        '((counsel-M-x . ivy--regex-fuzzy)
+                                  (t           . ivy--regex-plus)))
+  :config
+  (ivy-mode 1)
+  (use-package counsel
+    :bind ("M-x"    . counsel-M-x)
+    :config
+    (assq-delete-all 'counsel-M-x ivy-initial-inputs-alist)
+    (use-package amx))
+  (use-package swiper
+    :bind ("C-s" . 'swiper)))
+
 (use-package magit
-  :bind ("C-x g" . 'magit-status))
+  :bind (("C-x g s" . 'magit-status)
+         ("C-x g l" . 'magit-log-all)))
 
 (use-package neotree
   :bind ([f8] . 'neotree-toggle)
   :init
-  (setq neo-theme 'icons))
+  (setq
+   neo-theme             'icons
+   neo-window-fixed-size nil)
+  :config
+  (add-to-list 'window-size-change-functions
+               (lambda (frame)
+                 (let ((neo-window (neo-global--get-window)))
+                   (unless (null neo-window)
+                     (setq neo-window-width (window-width neo-window)))))))
+
+(use-package projectile
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :init
+  (setq projectile-completion-system 'ivy)
+  :config
+  (projectile-mode +1))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -90,6 +128,22 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+;; Development
+(use-package flycheck
+  :pin melpa-unstable
+  :hook (rust-mode . flycheck-mode)
+  :config
+  (use-package flycheck-pos-tip
+    :pin melpa-unstable
+    :hook (flycheck-mode . flycheck-pos-tip-mode)))
+
+(use-package rust-mode
+  :mode "\\.rs\\'"
+  :init
+  :config
+  (use-package flycheck-rust
+    :hook (flycheck-mode . flycheck-rust-setup)))
 
 ;; Theming
 (use-package solarized-theme
@@ -102,7 +156,7 @@
   (setq
    calendar-latitude  52.5
    calendar-longitude 13.4
-   circadian-themes   '((:sunrise . solarized-light)
+   circadian-themes   '((:sunrise . zenburn)
                         (:sunset  . zenburn)))
   :config
   (circadian-setup))
@@ -113,18 +167,30 @@
   :config
   (global-so-long-mode 1))
 
+(use-package dashboard
+  :init
+  (setq
+   dashboard-startup-banner 'logo
+   dashboard-items          '((projects  . 5)
+                              (recents   . 5)
+                              (bookmarks . 5)
+                              (agenda    . 5)))
+  :config
+  (evil-define-key 'normal dashboard-mode-map (kbd "j") 'dashboard-next-line)
+  (evil-define-key 'normal dashboard-mode-map (kbd "k") 'dashboard-previous-line)
+  (evil-define-key 'normal dashboard-mode-map (kbd "}") 'dashboard-next-section)
+  (evil-define-key 'normal dashboard-mode-map (kbd "{") 'dashboard-previous-section)
+  (dashboard-setup-startup-hook)
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+
 ;; TODO:
 ;;;;
-;; - rust-mode / rustic
-;; - ivy
-;;   - counsel
-;;   - swipper
-;;   - avy
 ;; - org-*
 ;;   - org-agenda
-;; - flycheck
-;; - dashboard
-;; - avy
+;; - rust-mode
+;;   - racer/cargo/ minor modes
+;;   - company/eldoc integration
+;; - lose projectile/amx/recentf files
 ;;;;
 ;; - fzf
 ;; - projectile
