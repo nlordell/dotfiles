@@ -1,6 +1,8 @@
 ;;; init.el --- Emacs init file
 ;;; Commentary:
 ;;; Personal init file for Evil Rust development with some goodies
+;;; TODO:
+;;; - split init.el
 
 ;;; Locals
 ;; TODO: fix these for Windows
@@ -158,27 +160,24 @@
   :mode "\\.rs\\'"
   :init
   :config
-  ;; - rust-mode
-  ;;   - racer/cargo/ minor modes
-  ;;   - company/eldoc integration
+  ;; TODO:
+  ;; - racer/cargo/ minor modes
+  ;; - company/eldoc integration
   (use-package flycheck-rust
     :hook (flycheck-mode . flycheck-rust-setup)))
 
 ;; Theming
-(use-package solarized-theme
-  :defer t)
 (use-package zenburn-theme
-  :defer t)
-
-(use-package circadian
-  :init
-  (setq
-   calendar-latitude  52.5
-   calendar-longitude 13.4
-   circadian-themes   '((:sunrise . zenburn)
-                        (:sunset  . zenburn)))
   :config
-  (circadian-setup))
+  (load-theme 'zenburn t))
+
+;; TODO: try out powerline and do customizations
+(use-package spaceline)
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (spaceline-emacs-theme)
+  (spaceline-toggle-minor-modes-off))
 
 ;; Miscellaneous
 (use-package so-long
@@ -201,11 +200,3 @@
   (evil-define-key 'normal dashboard-mode-map (kbd "{") 'dashboard-previous-section)
   (dashboard-setup-startup-hook)
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
-
-;; TODO:
-;;;;
-;; - org-*
-;;   - org-agenda
-;;;;
-;; - mode line
-;; - split init.el
