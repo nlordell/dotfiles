@@ -13,12 +13,6 @@ Clone the repository and run the appropriate installation script:
 ./install.sh
 ```
 
-### Windows
-
-```powershell
-powershell -File .\install.ps1
-```
-
 ## Notes
 
 ### Neovim
