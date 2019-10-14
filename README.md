@@ -5,9 +5,7 @@ machines.
 
 ## Installation
 
-Clone the repository and run the appropriate installation script:
-
-### Unix
+Clone the repository and run the installation script:
 
 ```sh
 ./install.sh
