@@ -14,3 +14,5 @@ set list
 set listchars=tab:»\ ,nbsp:␣,trail:·
 set autoindent copyindent
 set noexpandtab tabstop=4 shiftwidth=4 smarttab
+
+nnoremap <C-P> :FZF<CR>
