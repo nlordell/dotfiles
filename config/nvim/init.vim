@@ -1,4 +1,5 @@
 call plug#begin(stdpath('data').'/plugged')
+Plug 'dense-analysis/ale'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -15,4 +16,10 @@ set listchars=tab:»\ ,nbsp:␣,trail:·
 set autoindent copyindent
 set noexpandtab tabstop=4 shiftwidth=4 smarttab
 
-nnoremap <C-P> :FZF<CR>
+let g:ale_sign_error = "\uf06a"
+let g:ale_sign_warning = "\uf071"
+
+nnoremap <silent> <C-p> :FZF<CR>
+nnoremap <silent> <Leader>af :ALEFix<CR>
+nnoremap <silent> <Leader>an :ALENext<CR>
+nnoremap <silent> <Leader>ap :ALEPrevious<CR>
