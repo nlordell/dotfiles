@@ -16,6 +16,8 @@ set listchars=tab:»\ ,nbsp:␣,trail:·
 set autoindent copyindent
 set noexpandtab tabstop=4 shiftwidth=4 smarttab
 
+call matchadd('ColorColumn', '\%81v\S', 100)
+
 let g:ale_sign_error = "\uf06a"
 let g:ale_sign_warning = "\uf071"
 
