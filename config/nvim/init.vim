@@ -1,4 +1,4 @@
-call plug#begin(stdpath('data').'/plugged')
+call plug#begin(stdpath('cache').'/plugged')
 Plug 'dense-analysis/ale'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
