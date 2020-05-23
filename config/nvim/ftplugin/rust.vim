@@ -9,3 +9,5 @@ nnoremap <silent> <Leader>cr :!cargo run<CR>
 nnoremap <silent> <Leader>cf :!cargo fmt --all<CR>
 nnoremap <silent> <Leader>cc :!cargo clippy --workspace --all-features --all-targets<CR>
 nnoremap <silent> <Leader>ct :!cargo test --workspace --all-features<CR>
+
+set expandtab
