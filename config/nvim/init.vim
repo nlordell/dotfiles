@@ -25,4 +25,4 @@ nnoremap <silent> <Leader>af :ALEFix<CR>
 nnoremap <silent> <Leader>an :ALENext<CR>
 nnoremap <silent> <Leader>ap :ALEPrevious<CR>
 nnoremap <silent> <Leader>gm :Rg =======<CR>
-nnoremap <silent> <Leader>p :FZF<CR>
+nnoremap <silent> <Leader>p :Files<CR>
