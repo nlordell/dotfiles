@@ -21,6 +21,6 @@ dotlink() {
 mkdir -p "$HOME/.config"
 
 dotlink "config/nvim"
-dotlink "config/sway"
+dotlink "config/kak"
 
 nvim +PlugInstall +qall
