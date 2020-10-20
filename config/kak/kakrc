@@ -1,1 +1,4 @@
 source "%val{config}/plugins/plugrc.kak"
+source "%val{config}/fzf.kak"
+
+map global user 'p' ':fzf-edit<ret>'
