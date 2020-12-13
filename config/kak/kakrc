@@ -2,3 +2,5 @@ source "%val{config}/plugins/plugrc.kak"
 source "%val{config}/fzf.kak"
 
 map global user 'p' ':fzf-edit<ret>'
+map global user 's' ':tmux-terminal-vertical kak -c %val{session}<ret>'
+map global user 'v' ':tmux-terminal-horizontal kak -c %val{session}<ret>'
