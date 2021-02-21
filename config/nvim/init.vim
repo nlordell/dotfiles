@@ -1,12 +1,14 @@
+let g:polyglot_disabled = ['autoindent', 'sensible']
+
 call plug#begin(stdpath('cache').'/plugged')
 Plug 'dense-analysis/ale'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'sheerun/vim-polyglot'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'ziglang/zig.vim'
 call plug#end()
 
 set inccommand=nosplit
