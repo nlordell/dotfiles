@@ -28,6 +28,7 @@ nnoremap <silent> <Leader>af :ALEFix<CR>
 nnoremap <silent> <Leader>an :ALENext<CR>
 nnoremap <silent> <Leader>ap :ALEPrevious<CR>
 nnoremap <silent> <Leader>gm :Rg =======<CR>
+nnoremap <silent> <Leader>fb :Buffers<CR>
 nnoremap <silent> <Leader>ff :Files<CR>
 nnoremap <silent> <Leader>fg :GFiles<CR>
 nnoremap <silent> <Leader>fl :Lines<CR>
