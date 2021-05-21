@@ -1,3 +1,2 @@
 .netrwhist
-emacs.d/session.*
-plug.vim.old
+packer_compiled.vim
