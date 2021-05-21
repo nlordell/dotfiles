@@ -1,1 +1,1 @@
-typescript.vim
+lua require('ft.typescript')
