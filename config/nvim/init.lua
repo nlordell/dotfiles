@@ -1,6 +1,5 @@
 local utils = require("utils")
 
--- disable unused providers
 utils.vars {
 	loaded_python_provider = 0,
 	loaded_python3_provider = 0,
@@ -9,7 +8,6 @@ utils.vars {
 	loaded_node_provider = 0,
 }
 
--- plugins
 require("packer").startup(function (use)
 	use "wbthomason/packer.nvim"
 
@@ -20,6 +18,17 @@ require("packer").startup(function (use)
 	}
 	use "folke/lsp-colors.nvim"
 	use {
+		"folke/tokyonight.nvim",
+		config = function ()
+			vim.g.tokyonight_colors = {
+				bg_dark = "#121212",
+				bg = "#1e1e1e",
+				bg_highlight = "#242424",
+			}
+			vim.cmd [[colorscheme tokyonight]]
+		end,
+	}
+	use {
 		"folke/which-key.nvim",
 		config = [[require("which-key").setup()]],
 	}
@@ -28,9 +37,13 @@ require("packer").startup(function (use)
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function ()
 			require("lualine").setup {
-				options = {theme = "powerline"},
+				options = {
+					theme = "tokyonight",
+					section_separators = "",
+					component_separators = "",
+				},
 			}
-		end,
+		end
 	}
 	use {
 		"neovim/nvim-lspconfig",
@@ -60,7 +73,6 @@ require("packer").startup(function (use)
 	-- TODO: some other plugins to try out
 	--[=[
 	use "dense-analysis/ale"
-	use "folke/tokyonight.nvim"
 	use "folke/trouble.nvim"
 	use "glepnir/lspsaga.nvim"
 	use "junegunn/vim-peekaboo"
@@ -74,7 +86,7 @@ end)
 
 -- customization
 utils.vars {
-	mapleader = " ",
+	mapleader = ",",
 	maplocalleader = ",",
 }
 utils.opts {
@@ -120,5 +132,5 @@ require("which-key").register({
    <https://github.com/wbthomason/dotfiles/blob/linux/neovim/.config/nvim/lua/config/lsp.lua>
  * configure colours:
    <https://github.com/wbthomason/dotfiles/blob/linux/neovim/.config/nvim/plugin/colors.vim>
- * choose a colourscheme.
+ * configure a colour scheme.
 ]]--
