@@ -44,7 +44,54 @@ local function setup()
 		}
 	else
 		lspconfig.tsserver.setup {
-			on_attach = on_attach,
+			on_attach = function (client, buffer)
+				client.resolved_capabilities.document_formatting = false
+				on_attach(client, buffer)
+			end
+		}
+		lspconfig.diagnosticls.setup {
+			filetypes = {"javascript", "typescript", "typescriptreact"},
+			init_options = {
+				linters = {
+					eslint = {
+						sourceName = "eslint",
+						rootPatterns = {"package.json"},
+						command = "./node_modules/.bin/eslint",
+						args = {"--stdin", "--stdin-filename", "%filepath", "--format", "json"},
+						debounce = 100,
+						parseJson = {
+							errorsRoot = "[0].messages",
+							line = "line",
+							column = "column",
+							endLine = "endLine",
+							endColumn = "endColumn",
+							message = "${message} [${ruleId}]",
+							security = "severity",
+						},
+						securities = {
+							[2] = "error",
+							[1] = "warning",
+						},
+					},
+				},
+				filetypes = {
+					javascript = "eslint",
+					typescript = "eslint",
+					typescriptreact = "eslint",
+				},
+				formatters = {
+					prettier = {
+						rootPatterns = {"package.json"},
+						command = "./node_modules/.bin/prettier",
+						args = {"--stdin-filepath", "%filepath"},
+					},
+				},
+				formatFiletypes = {
+					javascript = "prettier",
+					typescript = "prettier",
+					typescriptreact = "prettier",
+				},
+			},
 		}
 	end
 end
