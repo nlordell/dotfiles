@@ -3,11 +3,18 @@ source "%val{config}/fzf.kak"
 
 set global ui_options ncurses_set_title=false
 
+declare-user-mode clip
+map global -docstring 'clipboard' user 'y' ':enter-user-mode clip<ret>'
+map global -docstring 'yank' clip 'y' '<a-|>xsel -bi<ret>'
+map global -docstring 'paste' clip 'p' '<a-!>xsel -b<ret>'
+map global -docstring 'paste before' clip 'P' '!xsel -b<ret>'
+map global -docstring 'replace' clip 'R' '|xsel -b<ret>'
+
 declare-user-mode find
 map global -docstring 'find' user 'f' ':enter-user-mode find<ret>'
 map global -docstring 'file' find 'f' ':fzf-edit<ret>'
 
 declare-user-mode tmux
-map global -docstring 'tiling' user 't' ':enter-user-mode tmux<ret>'
+map global -docstring 'tmux' user 't' ':enter-user-mode tmux<ret>'
 map global -docstring 'split' tmux 's' ':tmux-terminal-vertical kak -c %val{session}<ret>'
 map global -docstring 'vsplit' tmux 'v' ':tmux-terminal-horizontal kak -c %val{session}<ret>'
