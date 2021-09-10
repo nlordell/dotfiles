@@ -38,4 +38,4 @@ gitinst \
 	"wbthomason/packer.nvim" \
 	"$(nvimpack "packer" "packer.nvim")"
 
-#nvim +PlugInstall +qall
+nvim +PackerInstall +PackerCompile +qall
