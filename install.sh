@@ -33,6 +33,7 @@ mkdir -p "$HOME/.config"
 
 dotlink "config/nvim"
 dotlink "config/kak"
+dotlink "config/tmux"
 
 gitinst \
 	"wbthomason/packer.nvim" \
