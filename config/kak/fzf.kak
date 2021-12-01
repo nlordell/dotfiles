@@ -1,7 +1,6 @@
 define-command -docstring "Open a FZF Tmux pane to select file to edit" \
 fzf-edit %{ evaluate-commands %sh{
-    # TODO(nlordell): Do version comparison, maybe with `sort -V`.
-    if [ "$(tmux -V)" = "tmux 3.2" ]; then
+    if [ "$(echo 3.2 $(tmux -V | sed 's/tmux //') | tr ' ' '\n' | sort -V | head -1)" = "3.2" ]; then
         view="-p 80%,50%"
     else
         view="-d 50%"
