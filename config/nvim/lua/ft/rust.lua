@@ -1,6 +1,7 @@
-local utils = require("utils")
+local set = require("utils.set")
+local keys = require("which-key")
 
-require("which-key").register({
+keys.register({
 	c = {
 		name = "cargo",
 		b = {"<cmd>!cargo build<cr>", "Build"},
@@ -11,6 +12,10 @@ require("which-key").register({
 		t = {"<cmd>!cargo test<cr>", "Test"},
 		T = {"<cmd>!cargo test --workspace --all-features<cr>", "Test Workspace"},
 	}
-}, {prefix = "<leader>"})
+}, {
+	prefix = "<leader>",
+})
 
-utils.bbopts {expandtab=true}
+set.opts {
+	expandtab = true,
+}

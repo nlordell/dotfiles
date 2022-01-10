@@ -18,10 +18,6 @@ dotlink() {
 	fi
 }
 
-nvimpack() {
-	echo "$HOME/.local/share/nvim/site/pack/$1/start/$2"
-}
-
 gitinst() {
 	if [[ ! -e "$2" ]]; then
 		local remote="git@github.com:$1.git"
@@ -31,12 +27,10 @@ gitinst() {
 
 mkdir -p "$HOME/.config"
 
+dotlink "config/emacs"
 dotlink "config/nvim"
-dotlink "config/kak"
-dotlink "config/tmux"
-
 gitinst \
 	"wbthomason/packer.nvim" \
-	"$(nvimpack "packer" "packer.nvim")"
+	"$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
 
-nvim +PackerInstall +PackerCompile +qall
+nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync"
