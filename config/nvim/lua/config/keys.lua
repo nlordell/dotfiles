@@ -2,6 +2,9 @@ local keys = require("which-key")
 
 local function setup()
 	keys.register({
+		Y = {"0vg_\"+y", "Copy Line To Clipboard"}
+	})
+	keys.register({
 		f = {
 			name = "find",
 			b = {"<cmd>Telescope buffers<cr>", "Buffer"},
