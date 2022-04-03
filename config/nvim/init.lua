@@ -43,7 +43,6 @@ packer.startup(function (use)
 			}
 		end,
 	}
-	use "rebelot/kanagawa.nvim"
 	use "tpope/vim-commentary"
 	use {
 		"tpope/vim-surround",
@@ -61,6 +60,7 @@ packer.startup(function (use)
 	use "nvim-neorg/neorg"
 	use "onsails/lspkind-nvim"
 	use "phaazon/hop.nvim"
+	use "rebelot/kanagawa.nvim"
 	]=]--
 end)
 
