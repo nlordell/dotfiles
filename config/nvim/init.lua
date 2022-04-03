@@ -43,6 +43,7 @@ packer.startup(function (use)
 			}
 		end,
 	}
+	use "rebelot/kanagawa.nvim"
 	use "tpope/vim-commentary"
 	use {
 		"tpope/vim-surround",

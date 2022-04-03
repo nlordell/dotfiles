@@ -27,6 +27,7 @@ gitinst() {
 
 mkdir -p "$HOME/.config"
 
+dotlink "config/alacritty"
 dotlink "config/emacs"
 dotlink "config/nvim"
 gitinst \
