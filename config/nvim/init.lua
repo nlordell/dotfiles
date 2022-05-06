@@ -37,7 +37,15 @@ packer.startup(function (use)
 		"nvim-treesitter/nvim-treesitter",
 		config = function ()
 			require("nvim-treesitter.configs").setup {
-				ensure_installed = "maintained",
+				ensure_installed = {
+					"c",
+					"comment",
+					"fennel",
+					"javascript",
+					"lua",
+					"rust",
+					"typescript",
+				},
 				highlight = {enable = true},
 				matchup = {enable = true},
 			}
