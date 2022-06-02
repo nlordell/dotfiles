@@ -20,6 +20,13 @@ packer.startup(function (use)
 			require("config.keys").setup()
 		end,
 	}
+	-- TODO: conflicts with leader key
+	--[=[
+	use {
+		"ggandor/lightspeed.nvim",
+		requires = "tpope/vim-repeat",
+	}
+	]=]--
 	use {
 		"neovim/nvim-lspconfig",
 		config = function ()

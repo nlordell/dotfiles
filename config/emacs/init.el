@@ -37,7 +37,11 @@
 (eval-when-compile (require 'use-package))
 (setq use-package-always-ensure t)
 
+;;; Setup Modus theme
+(load-theme 'modus-operandi)
+
 ;;; Use separate file for custom variables
-(setq custom-file "~/.config/emacs/custom.el")
-(if (file-exists-p custom-file)
-  (load custom-file nil t))
+(setq custom-file "~/.cache/emacs/custom.el")
+(unless (file-exists-p custom-file)
+  (write-region "" nil custom-file))
+(load custom-file nil t)
