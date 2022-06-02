@@ -18,10 +18,10 @@ local function setup()
 			p = {"<cmd>Telescope planets<cr>", "Planet"},
 		},
 		x = {
-			name = "indentation"
-			2 = {"<cmd>set expandtab shiftwidth=2 tabstop=2<cr>", "2-space"},
-			4 = {"<cmd>set expandtab shiftwidth=4 tabstop=4<cr>", "2-space"},
-			t = {"<cmd>set noexpandtab shiftwidth=4 tabstop=4<cr>", "2-space"},
+			name = "indentation",
+			["2"] = {"<cmd>set expandtab shiftwidth=2 tabstop=2<cr>", "2-space"},
+			["4"] = {"<cmd>set expandtab shiftwidth=4 tabstop=4<cr>", "4-space"},
+			t = {"<cmd>set noexpandtab shiftwidth=4 tabstop=4<cr>", "tabs"},
 		},
 	}, {
 		prefix = "<leader>",
