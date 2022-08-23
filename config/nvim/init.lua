@@ -41,6 +41,13 @@ packer.startup(function (use)
 		},
 	}
 	use {
+		"nvim-telescope/telescope-ui-select.nvim",
+		requires = "nvim-telescope/telescope.nvim",
+		config = function ()
+			require("telescope").load_extension("ui-select")
+		end,
+	}
+	use {
 		"nvim-treesitter/nvim-treesitter",
 		config = function ()
 			require("nvim-treesitter.configs").setup {
