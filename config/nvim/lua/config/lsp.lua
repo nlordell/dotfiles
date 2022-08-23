@@ -7,7 +7,7 @@ local function on_attach(client, buffer)
 	keys.register({
 		a = {
 			name = "lsp",
-			a = {"<cmd>Telescope lsp_code_actions<cr>", "Actions"},
+			a = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Actions"},
 			d = {"<cmd>lua vim.lsp.buf.definition()<cr>", "Declaration"},
 			D = {"<cmd>Telescope lsp_definitions<cr>", "Definition"},
 			e = {"<cmd>lua vim.diagnostic.open_float()<cr>", "Show Diagnostic"},
