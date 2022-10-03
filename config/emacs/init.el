@@ -25,7 +25,8 @@
 (require 'package)
 (setq
   package-enable-at-startup nil
-  package-user-dir "~/.cache/emacs/elpa/")
+  package-user-dir "~/.cache/emacs/elpa/"
+  package-gnupghome-dir "~/.cache/emacs/elpa/gnupg")
 (add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/"))
 (unless package--initialized (package-initialize))
@@ -45,3 +46,9 @@
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 (load custom-file nil t)
+
+;;; TODO(nlordell):
+;;; 1. Setup `which-keys` for command discoverability
+;;; 2. Move `eln-cache`, this requires `startup-redirect-eln-cache` which will
+;;;    only become available in Emacs v29+
+;;; 3. Try out `meow` modal editing mode
