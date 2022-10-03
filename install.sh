@@ -20,7 +20,7 @@ dotlink() {
 
 gitinst() {
 	if [[ ! -e "$2" ]]; then
-		local remote="git@github.com:$1.git"
+		local remote="https://github.com/$1"
 		git clone "$remote" "$2"
 	else
 		echo "skipping $1: '$2' already exists." >&2
@@ -35,8 +35,6 @@ gitinst \
 	"wbthomason/packer.nvim" \
 	"$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
 
-if [ "$CODESPACES" = true ]; then
-    # TODO(nlordell): Codespaces specific setup.
+if which nvim &>/dev/null; then
+    nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync"
 fi
-
-nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync"
