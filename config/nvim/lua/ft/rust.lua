@@ -7,7 +7,7 @@ keys.register({
 		b = {"<cmd>!cargo build<cr>", "Build"},
 		c = {"<cmd>!cargo clippy<cr>", "Check"},
 		C = {"<cmd>!cargo clippy --workspace --all-features --all-targets<cr>", "Check Workspace"},
-		F = {"<cmd>!cargo +nightly fmt --version 2>/dev/null && cargo +nightly fmt --all || cargo fmt --all<cr>", "Format Workspace"},
+		F = {"<cmd>!cargo +nightly fmt --version >/dev/null && cargo +nightly fmt --all || cargo fmt --all<cr>", "Format Workspace"},
 		r = {"<cmd>!cargo run<cr>", "Run"},
 		t = {"<cmd>!cargo test<cr>", "Test"},
 		T = {"<cmd>!cargo test --workspace --all-features<cr>", "Test Workspace"},

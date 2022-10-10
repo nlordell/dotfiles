@@ -27,9 +27,7 @@
                              (search . " %i %-12:c"))
   org-agenda-custom-commands '(
     ("g" "Get Things Done (GTD)"
-     ((agenda ""
-              ((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline))
-               (org-deadline-warning-days 0)))
+     ((agenda "" ((org-deadline-warning-days 0)))
       (todo "NEXT"
             ((org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline))
              (org-agenda-prefix-format "  %i %-12:c [%e] ")
