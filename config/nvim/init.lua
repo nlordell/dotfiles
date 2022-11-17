@@ -103,3 +103,8 @@ set.opts {
 
 -- TODO: make this prettier.
 vim.cmd [[call matchadd('ColorColumn', '\%81v.')]]
+if vim.fn.has("mac") == 1 then
+	set.opts {
+		bg = "light"
+	}
+end

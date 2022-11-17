@@ -47,7 +47,7 @@
 
 ;;; Org todo
 (setq
-  org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "|" "DONE(d)"))
+  org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "|" "WONTFIX(x)" "DONE(d)"))
   org-log-done 'time)
 (defun gtd-log-todo-next-creation-date (&rest ignore)
   "Log NEXT creation time in the property drawer under the key 'ACTIVATED'"
