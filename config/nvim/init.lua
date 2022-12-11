@@ -99,12 +99,8 @@ set.opts {
 	listchars = {tab = "» ", nbsp = "␣", trail = "·"},
 	tabstop = 4,
 	shiftwidth = 4,
+	background = "light"
 }
 
 -- TODO: make this prettier.
 vim.cmd [[call matchadd('ColorColumn', '\%81v.')]]
-if vim.fn.has("mac") == 1 then
-	set.opts {
-		bg = "light"
-	}
-end
