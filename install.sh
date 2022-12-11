@@ -19,9 +19,11 @@ dotlink() {
 }
 
 gitinst() {
-	if [[ ! -e "$2" ]]; then
-		local remote="https://github.com/$1"
-		git clone "$remote" "$2"
+	local remote="https://github.com/$1"
+	local dst="$HOME/$2"
+
+	if [ ! -e "$dst" ]; then
+		git clone "$remote" "$dst"
 	else
 		echo "skipping $1: '$2' already exists." >&2
 	fi
@@ -33,7 +35,7 @@ dotlink "config/emacs"
 dotlink "config/nvim"
 gitinst \
 	"wbthomason/packer.nvim" \
-	"$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
+	".local/share/nvim/site/pack/packer/start/packer.nvim"
 
 if which nvim &>/dev/null; then
     nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync"
