@@ -49,3 +49,5 @@ instopt sharkdp/fd \
 	fd '*-x86_64-unknown-linux-gnu.tar.gz' --strip-components=1
 instopt zellij-org/zellij \
 	zellij '*-x86_64-unknown-linux-musl.tar.gz'
+
+nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync"
