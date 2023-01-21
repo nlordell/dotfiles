@@ -9,7 +9,11 @@ gitenter() {
 	echo "### $package ###"
 
 	local src="$PREFIX/build/$1"
-	git clone "$repo" "$src"
+	if [[ -d "$src" ]]; then
+		git -C "$src" pull
+	else
+		git clone "$repo" "$src"
+	fi
 	pushd "$src"
 }
 
@@ -41,3 +45,10 @@ gitenter hare https://git.sr.ht/~sircmpwn/hare
 	make
 	make install
 popd
+
+for bin in $PREFIX/bin/*; do
+	local linkname="$HOME/.local/bin/$(basename "$bin")"
+	if [[ ! -e "$linkname" ]]; then
+		ln -s "$bin" "$linkname"
+	fi
+done
