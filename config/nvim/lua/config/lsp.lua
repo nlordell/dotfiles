@@ -11,7 +11,7 @@ local function on_attach(client, buffer)
 			d = {"<cmd>lua vim.lsp.buf.definition()<cr>", "Declaration"},
 			D = {"<cmd>Telescope lsp_definitions<cr>", "Definition"},
 			e = {"<cmd>lua vim.diagnostic.open_float()<cr>", "Show Diagnostic"},
-			f = {"<cmd>lua vim.lsp.buf.formatting()<cr>", "Format"},
+			f = {"<cmd>lua vim.lsp.buf.format{async=true}<cr>", "Format"},
 			i = {"<cmd>Telescope lsp_implementations<cr>", "Implementation"},
 			k = {"<cmd>lua vim.lsp.buf.hover()<cr>", "Hover"},
 			K = {"<cmd>lua vim.lsp.buf.signature_help()<cr>", "Help"},
