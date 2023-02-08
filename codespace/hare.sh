@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ "$CODESPACES" != "true" ]; then
+	echo "ERROR: not in a codespace." >&2
+	exit 1
+fi
+
 export PREFIX=/opt/hare
 
 gitenter() {
