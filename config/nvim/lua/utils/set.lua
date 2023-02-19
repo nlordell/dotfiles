@@ -11,4 +11,5 @@ end
 return {
 	vars = scoped_setter({vim.g}),
 	opts = scoped_setter({vim.opt}),
+	locl = scoped_setter({vim.opt_local}),
 }
