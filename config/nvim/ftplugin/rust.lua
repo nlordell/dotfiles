@@ -14,8 +14,13 @@ keys.register({
 	}
 }, {
 	prefix = "<leader>",
+	buffer = vim.api.nvim_get_current_buf(),
 })
 
-set.opts {
+set.locl {
 	expandtab = true,
+	shiftwidth = 4,
+	tabstop = 4,
+	spell = true,
+	spellcapcheck = "",
 }

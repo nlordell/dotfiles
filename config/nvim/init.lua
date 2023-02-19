@@ -97,9 +97,10 @@ set.opts {
 	relativenumber = true,
 	list = true,
 	listchars = {tab = "» ", nbsp = "␣", trail = "·"},
-	tabstop = 4,
-	shiftwidth = 4,
-	background = "light"
+	expandtab = false,
+	tabstop = 8,
+	shiftwidth = 8,
+	background = "light",
 }
 
 -- TODO: make this prettier.
