@@ -1,0 +1,11 @@
+set-option global tabstop 8
+set-option global indentwidth 0
+
+add-highlighter global/ number-lines -separator "  " -hlcursor
+add-highlighter global/ regex \h+$ 0:Error
+
+map -docstring "yank selection to the clipboard" \
+	global user y "<a-|> pbcopy<ret>"
+
+map -docstring "paste clipboard" \
+	global user p "<a-!> pbpaste<ret>"
