@@ -71,6 +71,9 @@ packer.startup(function (use)
 		requires = "tpope/vim-repeat",
 	}
 
+	-- TODO: Setup Modus Vivendi theme.
+	use 'nyoom-engineering/oxocarbon.nvim'
+
 	-- TODO: some other plugins to try out
 	--[=[
 	use "ggandor/lightspeed.nvim"
@@ -95,13 +98,27 @@ set.vars {
 set.opts {
 	number = true,
 	relativenumber = true,
+	-- TODO: Finish setting up Modus Vivendi theme
+	-- cursorline = true,
+	-- cursorlineopt = "both",
 	list = true,
 	listchars = {tab = "» ", nbsp = "␣", trail = "·"},
 	expandtab = false,
 	tabstop = 8,
 	shiftwidth = 8,
-	background = "light",
 }
 
--- TODO: make this prettier.
-vim.cmd [[call matchadd('ColorColumn', '\%81v.')]]
+vim.cmd [[
+	" TODO: Finish setting up Modus Vivendi theme
+	" colorscheme modus-vivendi
+
+	" TODO: make this prettier.
+	call matchadd('ColorColumn', '\%81v.')
+]]
+
+set.opts {
+	background = "dark",
+}
+vim.cmd [[
+	colorscheme oxocarbon
+]]
