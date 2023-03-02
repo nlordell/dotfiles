@@ -26,7 +26,7 @@ packer.startup(function (use)
 		"ggandor/lightspeed.nvim",
 		requires = "tpope/vim-repeat",
 	}
-	]=]--
+	--]=]
 	use {
 		"neovim/nvim-lspconfig",
 		config = function ()
@@ -73,6 +73,7 @@ packer.startup(function (use)
 
 	-- TODO: Setup Modus Vivendi theme.
 	use 'nyoom-engineering/oxocarbon.nvim'
+	--]=]
 
 	-- TODO: some other plugins to try out
 	--[=[
@@ -86,10 +87,9 @@ packer.startup(function (use)
 	use "onsails/lspkind-nvim"
 	use "phaazon/hop.nvim"
 	use "rebelot/kanagawa.nvim"
-	]=]--
+	--]=]
 end)
 
--- customization
 set.vars {
 	mapleader = ",",
 	maplocalleader = ",",
@@ -99,8 +99,9 @@ set.opts {
 	number = true,
 	relativenumber = true,
 	-- TODO: Finish setting up Modus Vivendi theme
-	-- cursorline = true,
-	-- cursorlineopt = "both",
+	cursorline = true,
+	cursorlineopt = "both",
+	--]=]
 	list = true,
 	listchars = {tab = "» ", nbsp = "␣", trail = "·"},
 	expandtab = false,
@@ -109,16 +110,20 @@ set.opts {
 }
 
 vim.cmd [[
-	" TODO: Finish setting up Modus Vivendi theme
-	" colorscheme modus-vivendi
+	" TODO: Setup Modus Vivendi theme.
+	colorscheme modus-vivendi
+	" ]=]
 
 	" TODO: make this prettier.
 	call matchadd('ColorColumn', '\%81v.')
 ]]
 
+-- TODO: Setup Modus Vivendi theme.
+--[=[
 set.opts {
 	background = "dark",
 }
 vim.cmd [[
 	colorscheme oxocarbon
 ]]
+--]=]

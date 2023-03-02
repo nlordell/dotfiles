@@ -163,13 +163,15 @@ local vivendi = {
 
 local function highlighter(palette)
 	return function(name, val)
-		-- TODO(nlordell): Automatically approximate RGB to ANSI-256
+		-- TODO: Automatically approximate RGB to ANSI-256
 		for _,f in ipairs({ "bg", "fg", "sp" }) do
 			if val[f] ~= nil then
 				local n = val[f]
 				local c = palette[n]
 				assert(c ~= nil, "unknown color '" .. n .. "'")
 				val[f] = c
+			else
+				val[f] = "NONE"
 			end
 		end
 		vim.api.nvim_set_hl(0, name, val)
@@ -178,9 +180,7 @@ end
 
 local function setup(palette)
 	vim.cmd [[
-		if exists("colors_name")
-			highlight clear
-		endif
+		highlight clear
 	]]
 
 	set.vars {
@@ -195,164 +195,68 @@ local function setup(palette)
 	local hl = highlighter(palette)
 
 	hl("ColorColumn", { fg = "fg-main", bg = "bg-active" })
---[[
-Conceal		Placeholder characters substituted for concealed
-		text (see 'conceallevel').
-							*hl-CurSearch*
-CurSearch	Used for highlighting a search pattern under the cursor
-		(see 'hlsearch').
-]]
-	-- Cursor does nothing, cause we don't manually specify highlight groups
---[[
-							*hl-Cursor*
-Cursor		Character under the cursor.
-lCursor		Character under the cursor when |language-mapping|
-		is used (see 'guicursor').
-							*hl-CursorIM*
-CursorIM	Like Cursor, but used when in IME mode. *CursorIM*
-]]
-
---[[
-							*hl-CursorColumn*
-CursorColumn	Screen-column at the cursor, when 'cursorcolumn' is set.
-]]
+	hl("Conceal", { fg = "olive" }) -- TODO
+	hl("CurSearch", { fg = "fg-main", bg = "bg-yellow-intense" })
+	-- hl("Cursor", { ... })
+	-- hl("lCursor", { ... })
+	-- hl("CursorIM", { ... })
+	-- hl("CursorColumn", { ... })
 	hl("CursorLine", { bg = "bg-hl-line" })
---[[
-							*hl-Directory*
-Directory	Directory names (and other special names in listings).
-							*hl-DiffAdd*
-DiffAdd		Diff mode: Added line. |diff.txt|
-							*hl-DiffChange*
-DiffChange	Diff mode: Changed line. |diff.txt|
-							*hl-DiffDelete*
-DiffDelete	Diff mode: Deleted line. |diff.txt|
-							*hl-DiffText*
-DiffText	Diff mode: Changed text within a changed line. |diff.txt|
-							*hl-EndOfBuffer*
-EndOfBuffer	Filler lines (~) after the end of the buffer.
-		By default, this is highlighted like |hl-NonText|.
-							*hl-TermCursor*
-TermCursor	Cursor in a focused terminal.
-							*hl-TermCursorNC*
-TermCursorNC	Cursor in an unfocused terminal.
-							*hl-ErrorMsg*
-ErrorMsg	Error messages on the command line.
-							*hl-WinSeparator*
-WinSeparator	Separators between window splits.
-							*hl-Folded*
-Folded		Line used for closed folds.
-							*hl-FoldColumn*
-FoldColumn	'foldcolumn'
-							*hl-SignColumn*
-SignColumn	Column where |signs| are displayed.
-							*hl-IncSearch*
-IncSearch	'incsearch' highlighting; also used for the text replaced with
-		":s///c".
-							*hl-Substitute*
-Substitute	|:substitute| replacement text highlighting.
-
-]]
+	hl("Directory", { fg = "blue-cooler" })
+	hl("DiffAdd", { fg = "fg-added", bg = "bg-added" })
+	hl("DiffChange", { fg = "fg-changed", bg = "bg-changed" })
+	hl("DiffDelete", { fg = "fg-removed", bg = "bg-removed" })
+	hl("DiffText", { fg = "fg-changed", bg = "bg-changed-refine" })
+	hl("EndOfBuffer", { fg = "bg-inactive" })
+	hl("TermCursor", { fg = "bg-main", bg = "fg-main" })
+	hl("TermCursorNC", { fg = "bg-main", bg = "fg-dim" })
+	hl("ErrorMsg", { fg = "red" })
+	hl("WinSeparator", { fg = "border", bg = "bg-dim" })
+	hl("Folded", { bg = "bg-inactive" })
+	-- hl("FoldColumn", { ... })
+	hl("SignColumn", { bg = "bg-dim" })
+	hl("IncSearch", { fg = "fg-main", bg = "bg-yellow-subtle" })
+	hl("Substitute", { fg = "fg-main", bg = "bg-red-intense" })
 	hl("LineNr", { fg = "fg-dim", bg = "bg-dim" })
 	hl("CursorLineNr", { fg = "fg-main", bg = "bg-active" })
---[[
-LineNrAbove	Line number for when the 'relativenumber'
-		option is set, above the cursor line.
-							*hl-LineNrBelow*
-LineNrBelow	Line number for when the 'relativenumber'
-		option is set, below the cursor line.
-							*hl-CursorLineNr*
-CursorLineSign	Like SignColumn when 'cursorline' is set for the cursor line.
-							*hl-CursorLineFold*
-CursorLineFold	Like FoldColumn when 'cursorline' is set for the cursor line.
-]]
-
---[[
-							*hl-MatchParen*
-MatchParen	Character under the cursor or just before it, if it
-		is a paired bracket, and its match. |pi_paren.txt|
-
-							*hl-ModeMsg*
-ModeMsg		'showmode' message (e.g., "-- INSERT --").
-							*hl-MsgArea*
-MsgArea		Area for messages and cmdline.
-							*hl-MsgSeparator*
-MsgSeparator	Separator for scrolled messages, `msgsep` flag of 'display'.
-							*hl-MoreMsg*
-MoreMsg		|more-prompt|
-							*hl-NonText*
-NonText		'@' at the end of the window, characters from 'showbreak'
-		and other characters that do not really exist in the text
-		(e.g., ">" displayed when a double-wide character doesn't
-		fit at the end of the line). See also |hl-EndOfBuffer|.
-]]
+	-- hl("LineNrAbove", { ... })
+	-- hl("LineNrBelow", { ... })
+	-- hl("CursorLineSign", { ... })
+	-- hl("CursorLineFold", { ... })
+	hl("MatchParen", { bg = "bg-paren-match" })
+	hl("ModeMsg", { fg = "fg-main" }) -- TODO
+	hl("MsgArea", { fg = "fg-main", bg = "bg-main" })
+	hl("MsgSeparator", { fg = "bg-active" }) -- TODO
+	hl("MoreMsg", { fg = "cyan-cooler" })
+	hl("NonText", { fg = "cyan" })
 	hl("Normal", { fg = "fg-main", bg = "bg-main" })
---[[
-NormalFloat	Normal text in floating windows.
-							*hl-NormalNC*
-NormalNC	Normal text in non-current windows.
-							*hl-Pmenu*
-Pmenu		Popup menu: Normal item.
-							*hl-PmenuSel*
-PmenuSel	Popup menu: Selected item.
-							*hl-PmenuSbar*
-PmenuSbar	Popup menu: Scrollbar.
-							*hl-PmenuThumb*
-PmenuThumb	Popup menu: Thumb of the scrollbar.
-							*hl-Question*
-Question	|hit-enter| prompt and yes/no questions.
-							*hl-QuickFixLine*
-QuickFixLine	Current |quickfix| item in the quickfix window. Combined with
-                |hl-CursorLine| when the cursor is there.
-							*hl-Search*
-Search		Last search pattern highlighting (see 'hlsearch').
-		Also used for similar items that need to stand out.
-							*hl-SpecialKey*
-SpecialKey	Unprintable characters: Text displayed differently from what
-		it really is. But not 'listchars' whitespace. |hl-Whitespace|
-							*hl-SpellBad*
-SpellBad	Word that is not recognized by the spellchecker. |spell|
-		Combined with the highlighting used otherwise.
-							*hl-SpellCap*
-SpellCap	Word that should start with a capital. |spell|
-		Combined with the highlighting used otherwise.
-							*hl-SpellLocal*
-SpellLocal	Word that is recognized by the spellchecker as one that is
-		used in another region. |spell|
-		Combined with the highlighting used otherwise.
-							*hl-SpellRare*
-SpellRare	Word that is recognized by the spellchecker as one that is
-		hardly ever used. |spell|
-		Combined with the highlighting used otherwise.
-							*hl-StatusLine*
-StatusLine	Status line of current window.
-							*hl-StatusLineNC*
-StatusLineNC	Status lines of not-current windows.
-		Note: If this is equal to "StatusLine", Vim will use "^^^" in
-		the status line of the current window.
-							*hl-TabLine*
-TabLine		Tab pages line, not active tab page label.
-							*hl-TabLineFill*
-TabLineFill	Tab pages line, where there are no labels.
-							*hl-TabLineSel*
-TabLineSel	Tab pages line, active tab page label.
-							*hl-Title*
-Title		Titles for output from ":set all", ":autocmd" etc.
-							*hl-Visual*
-Visual		Visual mode selection.
-							*hl-VisualNOS*
-VisualNOS	Visual mode selection when vim is "Not Owning the Selection".
-							*hl-WarningMsg*
-WarningMsg	Warning messages.
-							*hl-Whitespace*
-Whitespace	"nbsp", "space", "tab", "multispace", "lead" and "trail"
-		in 'listchars'.
-							*hl-WildMenu*
-WildMenu	Current match in 'wildmenu' completion.
-							*hl-WinBar*
-WinBar		Window bar of current window.
-							*hl-WinBarNC*
-WinBarNC	Window bar of not-current windows.
-]]
+	-- hl("NormalFloat", { ... })
+	-- hl("NormalNC", { ... })
+	hl("Pmenu", { fg = "fg-main", bg = "bg-inactive" })
+	hl("PmenuSel", { bg = "bg-completion" })
+	hl("PmenuSbar", { bg = "bg-dim" })
+	hl("PmenuThumb", { bg = "fg-dim" })
+	hl("Question", { fg = "cyan-cooler" })
+	-- hl("QuickFixLine", { ... })
+	hl("Search", { fg = "fg-main", bg = "bg-cyan-intense" })
+	hl("SpecialKey", { fg = "olive" }) -- TODO
+	hl("SpellBad", { sp = "red-faint", undercurl = true })
+	hl("SpellCap", { sp = "yellow-faint", undercurl = true })
+	hl("SpellLocal", { sp = "cyan-faint", undercurl = true })
+	hl("SpellLocal", { sp = "cyan-faint", undercurl = true })
+	hl("StatusLine", { fg = "fg-mode-line-active", bg = "bg-mode-line-active" })
+	hl("StatusLineNC", { fg = "fg-mode-line-inactive", bg = "bg-mode-line-inactive" })
+	hl("TabLine", { bg = "bg-tab-other" })
+	hl("TabLineFill", { bg = "bg-tab-bar" })
+	hl("TabLine", { bg = "bg-tab-current" })
+	hl("Title", { fg = "cyan-cooler" })
+	hl("Visual", { fg = "fg-region", bg = "bg-region" })
+	hl("VisualNOS", { fg = "fg-main", bg = "bg-hover-secondary" })
+	hl("WarningMsg", { fg = "yellow-warmer" })
+	hl("Whitespace", { fg = "fg-dim" })
+	hl("WildMenu", { bg = "bg-inactive" })
+	hl("WinBar", { fg = "fg-main", bg = "bg-hover" })
+	hl("WinBarNC", { bg = "bg-dim" })
 end
 
 return {
