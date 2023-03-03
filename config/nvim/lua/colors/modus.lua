@@ -257,6 +257,57 @@ local function setup(palette)
 	hl("WildMenu", { bg = "bg-inactive" })
 	hl("WinBar", { fg = "fg-main", bg = "bg-hover" })
 	hl("WinBarNC", { bg = "bg-dim" })
+
+	hl("DiagnosticError", { fg = "red", bold = true })
+	hl("DiagnosticHint", { fg = "cyan-cooler", bold = true })
+	hl("DiagnosticInfo", { fg = "cyan-cooler", bold = true })
+	hl("DiagnosticWarn", { fg = "yellow-warmer", bold = true })
+	hl("DiagnosticUnderlineError", { sp = "red-intense", undercurl = true })
+	hl("DiagnosticUnderlineHint", { sp = "cyan", undercurl = true })
+	hl("DiagnosticUnderlineInfo", { sp = "cyan", undercurl = true })
+	hl("DiagnosticUnderlineWarn", { sp = "yellow", undercurl = true })
+
+	hl("LspReferenceText", { bg = "bg-dim" })
+	hl("LspReferenceRead", { bg = "bg-dim" })
+	hl("LspReferenceWrite", { bg = "bg-dim" })
+	hl("LspSignatureActiveParameter", { fg = "olive" }) -- TODO
+
+	hl("Comment", { fg = "fg-dim", italic = true }) -- any comment
+	hl("Constant", { fg = "blue-cooler" }) -- any constant
+	hl("String", { fg = "blue-warmer" })
+	hl("Character", { fg = "blue-warmer" })
+	-- hl("Number", { ... })
+	hl("Boolean", { bold = true })
+	-- hl("Float", { ... })
+	hl("Identifier", { fg = "cyan" }) -- any variable name
+	hl("Function", { fg = "magenta" }) -- function name (also: methods for classes)
+	hl("Statement", { fg = "magenta-cooler" }) -- any statement
+	-- hl("Conditional", { ... }) -- if, then, else, endif, switch, etc.
+	-- hl("Repeat", { ... }) -- for, do, while, etc.
+	-- hl("Label", { ... }) -- case, default, etc.
+	-- hl("Operator", { ... }) -- "sizeof", "+", "*", etc.
+	-- hl("Keyword", { ... }) -- any other keyword
+	-- hl("Exception", { ... }) -- try, catch, throw
+	hl("PreProc", { fg = "red-cooler" }) -- generic Preprocessor
+	-- hl("Include", { ... }) -- preprocessor #include
+	-- hl("Define", { ... }) -- preprocessor #define
+	-- hl("Macro", { ... }) -- same as Define
+	-- hl("PreCondit", { ... }) -- preprocessor #if, #else, #endif, etc.
+	hl("Type", { fg = "cyan-cooler" })
+	-- hl("StorageClass", { ... })
+	-- hl("Structure", { ... })
+	-- hl("Typedef", { ... })
+	hl("Special", { fg = "" }) -- any special symbol
+	hl("SpecialChar", { fg = "" }) -- special character in a constant
+	hl("Tag", { fg = "" }) -- you can use CTRL-] on this
+	hl("Delimiter", { fg = "" }) -- character that needs attention
+	hl("SpecialComment", { fg = "" }) -- special things inside a comment
+	hl("Debug", { fg = "" }) -- debugging statements
+	hl("Underlined", { sp = "blue-faint", undercurl = true })
+	-- hl("Ignore", { fg = "" }) -- left blank, hidden  |hl-Ignore|
+	hl("Error", { fg = "red-faint" }) -- any erroneous construct
+	hl("Todo", { fg = "red-faint" }) -- anything that needs extra attention; mostly the
+				-- keywords TODO FIXME and XXX
 end
 
 return {
