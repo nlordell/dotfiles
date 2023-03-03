@@ -26,7 +26,7 @@ packer.startup(function (use)
 		"ggandor/lightspeed.nvim",
 		requires = "tpope/vim-repeat",
 	}
-	]=]--
+	--]=]
 	use {
 		"neovim/nvim-lspconfig",
 		config = function ()
@@ -65,6 +65,7 @@ packer.startup(function (use)
 			}
 		end,
 	}
+	use "rebelot/kanagawa.nvim"
 	use "tpope/vim-commentary"
 	use {
 		"tpope/vim-surround",
@@ -83,10 +84,9 @@ packer.startup(function (use)
 	use "onsails/lspkind-nvim"
 	use "phaazon/hop.nvim"
 	use "rebelot/kanagawa.nvim"
-	]=]--
+	--]=]
 end)
 
--- customization
 set.vars {
 	mapleader = ",",
 	maplocalleader = ",",
@@ -95,13 +95,18 @@ set.vars {
 set.opts {
 	number = true,
 	relativenumber = true,
+	cursorline = true,
+	cursorlineopt = "both",
 	list = true,
 	listchars = {tab = "» ", nbsp = "␣", trail = "·"},
 	expandtab = false,
 	tabstop = 8,
 	shiftwidth = 8,
-	background = "light",
 }
 
--- TODO: make this prettier.
-vim.cmd [[call matchadd('ColorColumn', '\%81v.')]]
+vim.cmd [[
+	colorscheme kanagawa
+
+	" TODO: make this prettier.
+	call matchadd('ColorColumn', '\%81v.')
+]]

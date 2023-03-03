@@ -43,7 +43,7 @@
 (setq use-package-always-ensure t)
 
 ;;; Setup Modus theme
-(load-theme 'modus-operandi)
+(load-theme 'modus-vivendi)
 
 ;;; Use separate file for custom variables
 (setq custom-file "~/.cache/emacs/custom.el")
