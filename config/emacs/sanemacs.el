@@ -1,5 +1,5 @@
 ;;;
-;;; Sanemacs <https://sanemacs.com>
+;;; Customized Sanemacs <https://sanemacs.com>
 ;;;
 
 ;;; Customize Emacs
@@ -9,7 +9,9 @@
 (column-number-mode)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq
+  inhibit-startup-echo-area-message (user-login-name)
   inhibit-startup-screen t
+  initial-major-mode 'fundamental-mode
   initial-scratch-message ""
   sentence-end-double-space nil)
 (setq-default
@@ -17,30 +19,18 @@
   show-trailing-whitespace t
   tab-width 4)
 
-;;; Write auto-saves and backups to `.cache` directory
+;;; Write auto-saves, backups and bookmarks to `.cache` directory
 (setq
    auto-save-list-file-prefix "~/.cache/emacs/auto-save/"
    auto-save-file-name-transforms '((".*" "~/.cache/emacs/auto-save/" t))
    backup-by-copying t
    backup-directory-alist '((".*" . "~/.cache/emacs/backup/"))
+   bookmark-default-file "~/.cache/emacs/bookmarks"
    create-lockfiles nil)
 
-;;; Setup `package.el`
-(require 'package)
-(setq
-  package-enable-at-startup nil
-  package-user-dir "~/.cache/emacs/elpa/"
-  package-gnupghome-dir "~/.cache/emacs/elpa/gnupg")
-(add-to-list 'package-archives
-  '("melpa" . "https://melpa.org/packages/"))
-(unless package--initialized (package-initialize))
-
-;;; Setup `use-package`
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile (require 'use-package))
-(setq use-package-always-ensure t)
+;;; Configure TRAMP
+(with-eval-after-load 'tramp-cache
+  (setq tramp-persistency-file-name "~/.cache/emacs/tramp"))
 
 ;;; Setup Modus theme
 (load-theme 'modus-vivendi)
