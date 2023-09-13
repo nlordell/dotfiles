@@ -57,6 +57,7 @@ packer.startup(function (use)
 					"fennel",
 					"javascript",
 					"lua",
+					"ocaml",
 					"rust",
 					"typescript",
 				},
