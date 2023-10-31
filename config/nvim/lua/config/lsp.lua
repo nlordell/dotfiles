@@ -31,7 +31,8 @@ local function on_attach(client, buffer)
 end
 
 local function setup()
-	lspconfig.rust_analyzer.setup{
+	lspconfig.rust_analyzer.setup {
+		autostart = false,
 		on_attach = on_attach,
 		settings = {
 			["rust-analyzer.checkOnSave.command"] = "clippy",
@@ -39,6 +40,7 @@ local function setup()
 	}
 
 	lspconfig.denols.setup {
+		autostart = false,
 		on_attach = on_attach,
 		init_options = {
 			lint = true,

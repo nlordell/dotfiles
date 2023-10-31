@@ -6,6 +6,10 @@ local function setup()
 	})
 
 	keys.register({
+		a = {
+			name = "lsp",
+			x = {"<cmd>LspStart<cr>", "Start LSP server"},
+		},
 		f = {
 			name = "find",
 			b = {"<cmd>Telescope buffers<cr>", "Buffer"},

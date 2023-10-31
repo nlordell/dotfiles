@@ -20,13 +20,6 @@ packer.startup(function (use)
 			require("config.keys").setup()
 		end,
 	}
-	-- TODO: conflicts with leader key
-	--[=[
-	use {
-		"ggandor/lightspeed.nvim",
-		requires = "tpope/vim-repeat",
-	}
-	--]=]
 	use {
 		"neovim/nvim-lspconfig",
 		config = function ()
@@ -55,10 +48,12 @@ packer.startup(function (use)
 					"c",
 					"comment",
 					"fennel",
+					"hare",
 					"javascript",
 					"lua",
 					"ocaml",
 					"rust",
+					"solidity",
 					"typescript",
 				},
 				highlight = {enable = true},
@@ -66,7 +61,6 @@ packer.startup(function (use)
 			}
 		end,
 	}
-	use "rebelot/kanagawa.nvim"
 	use "tpope/vim-commentary"
 	use {
 		"tpope/vim-surround",
@@ -106,8 +100,6 @@ set.opts {
 }
 
 vim.cmd [[
-	colorscheme kanagawa
-
 	" TODO: make this prettier.
 	call matchadd('ColorColumn', '\%81v.')
 ]]

@@ -8,9 +8,7 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (column-number-mode)
 (fset 'yes-or-no-p 'y-or-n-p)
-(put 'inhibit-startup-echo-area-message 'saved-value t) ;; hacky workaround
 (setq
-  inhibit-startup-echo-area-message (user-login-name)
   inhibit-startup-screen t
   initial-major-mode 'fundamental-mode
   initial-scratch-message ""
