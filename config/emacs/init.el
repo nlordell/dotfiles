@@ -1,6 +1,5 @@
 (load "~/.config/emacs/sanemacs.el" nil t)
 ;;(load "~/.config/emacs/gtd.el" nil t)
-(load "~/.config/emacs/macos.el" nil t)
 
 (use-package which-key
   :ensure t
@@ -15,3 +14,7 @@
 ;;;    <https://happihacking.com/blog/posts/2023/dev-containers-emacs/>
 ;;; 5. Investigate other potential sane Emacs defaults
 ;;;    <https://idiomdrottning.org/bad-emacs-defaults>
+
+;;; Enable ligatures on macOS
+(if (fboundp 'mac-auto-operator-composition-mode)
+  (mac-auto-operator-composition-mode))
