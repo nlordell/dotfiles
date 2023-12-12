@@ -14,4 +14,6 @@
 (setq warning-suppress-log-types '((comp) (bytecomp)))
 
 ;;; HACK: Work around native compilation errors on macOS...
-(setenv "LIBRARY_PATH" "/opt/local/lib/gcc12/gcc/arm64-apple-darwin23/12.3.0")
+(if (eq system-type 'darwin)
+  (setenv "LIBRARY_PATH" "/opt/local/lib/gcc12/gcc/arm64-apple-darwin23/12.3.0")
+)
