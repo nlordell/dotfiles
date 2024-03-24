@@ -1,5 +1,15 @@
 local keys = require("which-key")
 
+local function indentation(name, setter)
+	return {
+		name = name .. " indentation",
+		["2"] = {"<cmd>" .. setter .." expandtab shiftwidth=2 tabstop=2<cr>", "2-space"},
+		["4"] = {"<cmd>" .. setter .." expandtab shiftwidth=4 tabstop=4<cr>", "4-space"},
+		t = {"<cmd>" .. setter .." noexpandtab shiftwidth=4 tabstop=4<cr>", "small tabs"},
+		T = {"<cmd>" .. setter .." noexpandtab shiftwidth=8 tabstop=8<cr>", "big tabs"},
+	}
+end
+
 local function setup()
 	keys.register({
 		Y = {"0vg_\"+y", "Copy Line To Clipboard"}
@@ -22,13 +32,8 @@ local function setup()
 			r = {"<cmd>Telescope grep_string<cr>", "String"},
 			p = {"<cmd>Telescope planets<cr>", "Planet"},
 		},
-		x = {
-			name = "indentation",
-			["2"] = {"<cmd>setlocal expandtab shiftwidth=2 tabstop=2<cr>", "2-space"},
-			["4"] = {"<cmd>setlocal expandtab shiftwidth=4 tabstop=4<cr>", "4-space"},
-			t = {"<cmd>setlocal noexpandtab shiftwidth=4 tabstop=4<cr>", "small tabs"},
-			T = {"<cmd>setlocal noexpandtab shiftwidth=8 tabstop=8<cr>", "big tabs"},
-		},
+		x = indentation("buffer", "setlocal"),
+		X = indentation("global", "set"),
 	}, {
 		prefix = "<leader>",
 	})
