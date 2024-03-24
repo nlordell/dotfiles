@@ -24,10 +24,10 @@ local function setup()
 		},
 		x = {
 			name = "indentation",
-			["2"] = {"<cmd>set expandtab shiftwidth=2 tabstop=2<cr>", "2-space"},
-			["4"] = {"<cmd>set expandtab shiftwidth=4 tabstop=4<cr>", "4-space"},
-			t = {"<cmd>set noexpandtab shiftwidth=4 tabstop=4<cr>", "small tabs"},
-			T = {"<cmd>set noexpandtab shiftwidth=8 tabstop=8<cr>", "big tabs"},
+			["2"] = {"<cmd>setlocal expandtab shiftwidth=2 tabstop=2<cr>", "2-space"},
+			["4"] = {"<cmd>setlocal expandtab shiftwidth=4 tabstop=4<cr>", "4-space"},
+			t = {"<cmd>setlocal noexpandtab shiftwidth=4 tabstop=4<cr>", "small tabs"},
+			T = {"<cmd>setlocal noexpandtab shiftwidth=8 tabstop=8<cr>", "big tabs"},
 		},
 	}, {
 		prefix = "<leader>",
