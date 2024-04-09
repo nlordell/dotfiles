@@ -32,6 +32,7 @@ gitinst() {
 mkdir -p "$HOME/.config"
 
 dotlink "config/emacs"
+dotlink "config/kak"
 dotlink "config/nvim"
 gitinst \
 	"wbthomason/packer.nvim" \
