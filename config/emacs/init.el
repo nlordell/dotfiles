@@ -14,6 +14,9 @@
 ;;;    <https://happihacking.com/blog/posts/2023/dev-containers-emacs/>
 ;;; 5. Investigate other potential sane Emacs defaults
 ;;;    <https://idiomdrottning.org/bad-emacs-defaults>
+;;; 6. Install and learn magit
+;;;    <https://www.youtube.com/watch?app=desktop&v=2-0OwGTt0dI>
+;;; 7. Matering Emacs <https://www.masteringemacs.org/>
 
 ;;; Enable ligatures on macOS
 (if (fboundp 'mac-auto-operator-composition-mode)
