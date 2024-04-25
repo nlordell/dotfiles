@@ -39,6 +39,11 @@ local function setup()
 		}
 	}
 
+	lspconfig.ocamllsp.setup {
+		autostart = false,
+		on_attach = on_attach,
+	}
+
 	lspconfig.denols.setup {
 		autostart = false,
 		on_attach = on_attach,
