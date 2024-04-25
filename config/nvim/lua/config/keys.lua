@@ -37,6 +37,15 @@ local function setup()
 	}, {
 		prefix = "<leader>",
 	})
+
+	for _, mode in ipairs({"n", "v"}) do
+		keys.register({
+			y = {"\"+y", "Copy To Clipboard"},
+		}, {
+			mode = mode,
+			prefix = "<leader>",
+		})
+	end
 end
 
 return {
