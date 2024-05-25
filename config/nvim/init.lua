@@ -61,7 +61,6 @@ packer.startup(function (use)
 			}
 		end,
 	}
-	use "tpope/vim-commentary"
 	use {
 		"tpope/vim-surround",
 		requires = "tpope/vim-repeat",
