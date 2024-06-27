@@ -51,6 +51,7 @@ packer.startup(function (use)
 					"hare",
 					"javascript",
 					"lua",
+					"markdown",
 					"ocaml",
 					"rust",
 					"solidity",
