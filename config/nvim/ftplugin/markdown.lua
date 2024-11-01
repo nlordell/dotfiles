@@ -1,14 +1,9 @@
 local set = require("utils.set")
 local keys = require("which-key")
 
-keys.register({
-	a = {
-		name = "lsp (emulation)",
-		f = {"<cmd>exec 'w' | exec 'silent !deno fmt %' | redraw!<cr>", "Format File"},
-	}
-}, {
-	prefix = "<leader>",
+keys.add({
 	buffer = vim.api.nvim_get_current_buf(),
+	{"<leader>af", "<cmd>exec 'w' | exec 'silent !deno fmt % --prose-wrap never' | redraw!<cr>", desc = "Format File"},
 })
 
 set.locl {

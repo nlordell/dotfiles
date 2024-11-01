@@ -1,7 +1,6 @@
 # `.dotfiles`
 
-A repository for keeping my dotfiles for personal configurations across
-machines.
+A repository for keeping my dotfiles for personal configurations across machines.
 
 ## Installation
 

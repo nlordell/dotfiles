@@ -15,6 +15,10 @@ packer.startup(function (use)
 	use "andymass/vim-matchup"
 	use {
 		"folke/which-key.nvim",
+		requires = {
+			"echasnovski/mini.icons",
+			"kyazdani42/nvim-web-devicons",
+		},
 		config = function ()
 			require("which-key").setup()
 			require("config.keys").setup()

@@ -1,49 +1,50 @@
 local keys = require("which-key")
 
-local function indentation(name, setter)
+local function indentation(prefix, name, setter)
 	return {
-		name = name .. " indentation",
-		["2"] = {"<cmd>" .. setter .." expandtab shiftwidth=2 tabstop=2<cr>", "2-space"},
-		["4"] = {"<cmd>" .. setter .." expandtab shiftwidth=4 tabstop=4<cr>", "4-space"},
-		t = {"<cmd>" .. setter .." noexpandtab shiftwidth=4 tabstop=4<cr>", "small tabs"},
-		T = {"<cmd>" .. setter .." noexpandtab shiftwidth=8 tabstop=8<cr>", "big tabs"},
+		{prefix, group = name .. " indentation"},
+		{prefix .. "2", "<cmd>" .. setter .." expandtab shiftwidth=2 tabstop=2<cr>", desc = "2-space"},
+		{prefix .. "4", "<cmd>" .. setter .." expandtab shiftwidth=4 tabstop=4<cr>", desc = "4-space"},
+		{prefix .. "t", "<cmd>" .. setter .." noexpandtab shiftwidth=4 tabstop=4<cr>", desc = "small tabs"},
+		{prefix .. "T", "<cmd>" .. setter .." noexpandtab shiftwidth=8 tabstop=8<cr>", desc = "big tabs"},
 	}
 end
 
 local function setup()
-	keys.register({
-		Y = {"0vg_\"+y", "Copy Line To Clipboard"}
+	keys.add({
+		{"<leader>?", group = "help"},
+		{"<leader>??", function () keys.show({ global = false }) end, desc = "Buffer Local Keymaps"},
+		{"<leader>?g", function () keys.show() end, desc = "All Keymaps"},
 	})
 
-	keys.register({
-		a = {
-			name = "lsp",
-			x = {"<cmd>LspStart<cr>", "Start LSP server"},
-		},
-		f = {
-			name = "find",
-			b = {"<cmd>Telescope buffers<cr>", "Buffer"},
-			c = {"<cmd>Telescope commands<cr>", "Command"},
-			f = {"<cmd>Telescope find_files<cr>", "File"},
-			F = {"<cmd>Telescope git_files<cr>", "Git File"},
-			g = {"<cmd>Telescope live_grep<cr>", "Live Grep"},
-			m = {"<cmd>Telescope git_status<cr>", "Git Modified File"},
-			s = {"<cmd>Telescope treesitter<cr>", "Symbol"},
-			r = {"<cmd>Telescope grep_string<cr>", "String"},
-			p = {"<cmd>Telescope planets<cr>", "Planet"},
-		},
-		x = indentation("buffer", "setlocal"),
-		X = indentation("global", "set"),
-	}, {
-		prefix = "<leader>",
+	keys.add({
+		{"<leader>a", group = "lsp"},
+		{"<leader>ax", "<cmd>LspStart<cr>", desc = "Start LSP server"},
 	})
 
+	keys.add({
+		{"<leader>f", group = "find" },
+		{"<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffer"},
+		{"<leader>fc", "<cmd>Telescope commands<cr>", desc = "Command"},
+		{"<leader>ff", "<cmd>Telescope find_files<cr>", desc = "File"},
+		{"<leader>fF", "<cmd>Telescope git_files<cr>", desc = "Git File"},
+		{"<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep"},
+		{"<leader>fm", "<cmd>Telescope git_status<cr>", desc = "Git Modified File"},
+		{"<leader>fs", "<cmd>Telescope treesitter<cr>", desc = "Symbol"},
+		{"<leader>fr", "<cmd>Telescope grep_string<cr>", desc = "String"},
+		{"<leader>fp", "<cmd>Telescope planets<cr>", desc = "Planet"},
+	})
+
+	keys.add(indentation("<leader>x", "buffer", "setlocal"))
+	keys.add(indentation("<leader>X", "global", "set"))
+
+	keys.add({
+		{"Y", "0vg_\"+y", desc = "Copy Line To Clipboard"},
+	})
 	for _, mode in ipairs({"n", "v"}) do
-		keys.register({
-			y = {"\"+y", "Copy To Clipboard"},
-		}, {
+		keys.add({
 			mode = mode,
-			prefix = "<leader>",
+			{"<leader>y", "\"+y", desc = "Copy To Clipboard"},
 		})
 	end
 end

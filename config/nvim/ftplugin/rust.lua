@@ -1,20 +1,16 @@
 local set = require("utils.set")
 local keys = require("which-key")
 
-keys.register({
-	c = {
-		name = "cargo",
-		b = {"<cmd>!cargo build<cr>", "Build"},
-		c = {"<cmd>!cargo clippy<cr>", "Check"},
-		C = {"<cmd>!cargo clippy --workspace --all-features --all-targets<cr>", "Check Workspace"},
-		F = {"<cmd>!cargo fmt --all<cr>", "Format Workspace"},
-		r = {"<cmd>!cargo run<cr>", "Run"},
-		t = {"<cmd>!cargo test<cr>", "Test"},
-		T = {"<cmd>!cargo test --workspace --all-features<cr>", "Test Workspace"},
-	}
-}, {
-	prefix = "<leader>",
+keys.add({
 	buffer = vim.api.nvim_get_current_buf(),
+	{"<leader>c", group = "cargo"},
+	{"<leader>cb", "<cmd>!cargo build<cr>", desc = "Build"},
+	{"<leader>cc", "<cmd>!cargo clippy<cr>", desc = "Check"},
+	{"<leader>cC", "<cmd>!cargo clippy --workspace --all-features --all-targets<cr>", desc = "Check Workspace"},
+	{"<leader>cF", "<cmd>!cargo fmt --all<cr>", desc = "Format Workspace"},
+	{"<leader>cr", "<cmd>!cargo run<cr>", desc = "Run"},
+	{"<leader>ct", "<cmd>!cargo test<cr>", desc = "Test"},
+	{"<leader>cT", "<cmd>!cargo test --workspace --all-features<cr>", desc = "Test Workspace"},
 })
 
 set.locl {
