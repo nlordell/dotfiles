@@ -39,14 +39,10 @@ local function setup()
 	keys.add(indentation("<leader>X", "global", "set"))
 
 	keys.add({
-		{"Y", "0vg_\"+y", desc = "Copy Line To Clipboard"},
+		{"<leader>S", "<cmd>set spell!<cr>", desc = "Toggle Spellcheck"},
+		{"<leader>Y", "0vg_\"+y", desc = "Copy Line To Clipboard"},
+		{"<leader>y", "\"+y", desc = "Copy To Clipboard", mode = {"n", "v"}},
 	})
-	for _, mode in ipairs({"n", "v"}) do
-		keys.add({
-			mode = mode,
-			{"<leader>y", "\"+y", desc = "Copy To Clipboard"},
-		})
-	end
 end
 
 return {

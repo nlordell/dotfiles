@@ -20,7 +20,9 @@ packer.startup(function (use)
 			"kyazdani42/nvim-web-devicons",
 		},
 		config = function ()
-			require("which-key").setup()
+			require("which-key").setup {
+				icons = {mappings = false},
+			}
 			require("config.keys").setup()
 		end,
 	}
@@ -86,9 +88,10 @@ packer.startup(function (use)
 	--]=]
 end)
 
+vim.keymap.set("", " ", "<nop>", {noremap = true})
 set.vars {
-	mapleader = ",",
-	maplocalleader = ",",
+	mapleader = " ",
+	maplocalleader = " ",
 }
 
 set.opts {
