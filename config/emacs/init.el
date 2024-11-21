@@ -3,6 +3,7 @@
 ;;; TODO(nlordell):
 ;; 1. Update remaining init scripts:
 ;;        (load "~/.config/emacs/gtd.el" nil t)
+;;        (load "~/.config/emacs/tree-sitter.el" nil t)
 ;; 2. Emacs over devcontainers/docker with TRAMP
 ;;    <https://happihacking.com/blog/posts/2023/dev-containers-emacs/>
 ;; 3. Investigate other potential sane Emacs defaults
