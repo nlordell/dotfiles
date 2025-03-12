@@ -15,8 +15,3 @@
 
 ;;; Suppress native-comp warnings on startup
 (setq warning-suppress-log-types '((comp) (bytecomp)))
-
-;;; HACK: Work around native compilation errors on macOS + Macports...
-(if (eq system-type 'darwin)
-  (setenv "LIBRARY_PATH" "/opt/local/lib/gcc12/gcc/arm64-apple-darwin23/12.3.0")
-)

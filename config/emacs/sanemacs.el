@@ -7,6 +7,7 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (column-number-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq
   inhibit-startup-screen t
@@ -17,6 +18,7 @@
   cursor-type 'bar
   show-trailing-whitespace t
   tab-width 4)
+(load-theme 'modus-vivendi)
 
 ;;; Write auto-saves, backups and bookmarks to `.cache` directory
 (setq
@@ -31,11 +33,12 @@
 (with-eval-after-load 'tramp-cache
   (setq tramp-persistency-file-name "~/.cache/emacs/tramp"))
 
-;;; Setup Modus theme
-(load-theme 'modus-vivendi)
-
 ;;; Use separate file for custom variables
 (setq custom-file "~/.cache/emacs/custom.el")
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 (load custom-file nil t)
+
+;;; Include MELPA packages
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
