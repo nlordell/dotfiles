@@ -1,4 +1,6 @@
-(defvar
+;;; -*- lexical-binding: t -*-
+
+(defconst
   ligatures-berkeley-mono
   '(; Group A
     ".." ".=" "..." "..<" "::" ":::" ":=" "::=" ";;" ";;;" "??" "???" ".?" "?."

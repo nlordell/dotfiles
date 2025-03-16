@@ -1,8 +1,6 @@
-;;;
-;;; Customized Sanemacs <https://sanemacs.com>
-;;;
+;;; -*- lexical-binding: t -*-
 
-;;; Customize Emacs
+;; Customize Emacs
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -20,7 +18,7 @@
   tab-width 4)
 (load-theme 'modus-vivendi)
 
-;;; Write auto-saves, backups and bookmarks to `.cache` directory
+;; Write auto-saves, backups and bookmarks to `.cache` directory
 (setq
    auto-save-list-file-prefix "~/.cache/emacs/auto-save/"
    auto-save-file-name-transforms '((".*" "~/.cache/emacs/auto-save/" t))
@@ -29,16 +27,22 @@
    bookmark-default-file "~/.cache/emacs/bookmarks"
    create-lockfiles nil)
 
-;;; Configure TRAMP
+;; Configure TRAMP
 (with-eval-after-load 'tramp-cache
   (setq tramp-persistency-file-name "~/.cache/emacs/tramp"))
 
-;;; Use separate file for custom variables
+;; Use separate file for custom variables
 (setq custom-file "~/.cache/emacs/custom.el")
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 (load custom-file nil t)
 
-;;; Include MELPA packages
+;; Configure package management
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(setq package-archive-priorities
+      '(("gnu" . 42)
+		("nongnu" . 42)
+        ("melpa" . 0)))
+(require 'use-package)
+(setq use-package-always-ensure t)
