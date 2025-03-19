@@ -1,4 +1,4 @@
-;;; -*- lexical-binding:t -*-
+;;; -*- lexical-binding: t -*-
 
 ;;; TODO(nlordell):
 ;; 1. Update remaining init scripts:
@@ -9,7 +9,6 @@
 ;; 3. Investigate other potential sane Emacs defaults
 ;;    <https://idiomdrottning.org/bad-emacs-defaults>
 ;; 4. Setup GPTel - should be possible without FastGPT credits
-;; 5. Resolve ELisp lint issues from Flycheck
 
 (load "~/.config/emacs/sanemacs.el" nil t)
 (load "~/.config/emacs/ligatures.el" nil t)
@@ -20,21 +19,12 @@
 
 (use-package ace-window
   :bind
-  (("C-c o" . ace-window)))
+  (("C-x o" . ace-window)))
 
 (use-package avy
   :bind
   (("C-:" . avy-goto-char)
    ("M-g f" . avy-goto-line)))
-
-(use-package flycheck
-  :config
-  (add-hook 'after-init-hook #'global-flycheck-mode))
-
-(use-package flycheck-eglot
-  :after (flycheck eglot)
-  :config
-  (global-flycheck-eglot-mode +1))
 
 (use-package ligature
   :config
@@ -73,9 +63,7 @@
 (use-package tuareg)
 
 (use-package ocaml-eglot
-  :after (flycheck tuareg)
-  :custom
-  (ocaml-eglot-syntax-checker 'flycheck)
+  :after (tuareg)
   :hook
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure))
@@ -84,8 +72,8 @@
 ;;; macOS
 ;;;
 
-;; Make the shell environement available when started on macOS Spotlight.
 (when (memq window-system '(mac ns))
+  ;; Make the shell environement available when started on macOS Spotlight.
   (use-package exec-path-from-shell
     :config
     (exec-path-from-shell-initialize)))
