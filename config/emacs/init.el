@@ -52,9 +52,10 @@
   :config
   (global-undo-tree-mode +1))
 
-(use-package which-key
-  :config
-  (which-key-mode +1))
+(unless (fboundp 'which-key-mode)
+  (use-package which-key
+    :config
+    (which-key-mode +1)))
 
 ;;;
 ;;; OCaml
