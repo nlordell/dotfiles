@@ -35,12 +35,6 @@
 (with-eval-after-load 'tramp-cache
   (setq tramp-persistency-file-name "~/.cache/emacs/tramp"))
 
-;; Use separate file for custom variables
-(setq custom-file "~/.cache/emacs/custom.el")
-(unless (file-exists-p custom-file)
-  (write-region "" nil custom-file))
-(load custom-file nil t)
-
 ;; Configure package management
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -61,3 +55,9 @@
   (undo-tree-auto-save-history nil)
   :config
   (global-undo-tree-mode +1))
+
+;; Use separate file for custom variables
+(setq custom-file "~/.cache/emacs/custom.el")
+(unless (file-exists-p custom-file)
+  (write-region "" nil custom-file))
+(load custom-file nil t)

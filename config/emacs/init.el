@@ -8,8 +8,8 @@
 
 (load "~/.config/emacs/sanemacs.el" nil t)
 
-(defcustom system-category 'plain
-  "The category of system.
+(defcustom system-flavour 'plain
+  "The flavour of system.
 
    Allows initialization and customization differentiation with a
    shared .emacs."
@@ -17,7 +17,7 @@
 				 (const :tag "Development" development))
   :group 'convenience)
 
-(when (eq system-category 'development)
-  (load "~/.config/emacs/config/development.el" nil t))
+(when (eq system-flavour 'development)
+  (load "~/.config/emacs/flavours/development.el" nil t))
 (when (eq system-type 'darwin)
-  (load "~/.config/emacs/config/macos.el" nil t))
+  (load "~/.config/emacs/flavours/macos.el" nil t))
