@@ -35,6 +35,9 @@
 (with-eval-after-load 'tramp-cache
   (setq tramp-persistency-file-name "~/.cache/emacs/tramp"))
 
+;; Configure Tree-Sitter
+(setq treesit-extra-load-path '("~/.cache/emacs/tree-sitter"))
+
 ;; Configure package management
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)

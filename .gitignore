@@ -1,2 +1,2 @@
-config/emacs/bookmarks
+config/emacs/local-init.el
 config/nvim/plugin/packer_compiled.lua

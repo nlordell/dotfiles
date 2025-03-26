@@ -21,3 +21,7 @@
   (load "~/.config/emacs/flavours/development.el" nil t))
 (when (eq system-type 'darwin)
   (load "~/.config/emacs/flavours/macos.el" nil t))
+
+(let ((local-init "~/.config/emacs/local-init.el"))
+  (when (file-exists-p local-init)
+	(load local-init nil t)))
