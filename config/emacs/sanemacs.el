@@ -47,3 +47,17 @@
 (setq package-archive-priorities '(("gnu" . 1) ("nongnu" . 1) ("melpa" . 0)))
 (require 'use-package)
 (setq use-package-always-ensure t)
+
+;; Install standard packages
+(use-package ace-window
+  :bind
+  (("C-x o" . ace-window)))
+(use-package avy
+  :bind
+  (("C-:" . avy-goto-char)
+   ("M-g f" . avy-goto-line)))
+(use-package undo-tree
+  :custom
+  (undo-tree-auto-save-history nil)
+  :config
+  (global-undo-tree-mode +1))
