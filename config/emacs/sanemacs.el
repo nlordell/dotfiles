@@ -22,21 +22,18 @@
  tab-width 4)
 (load-theme 'modus-vivendi)
 
-;; Write auto-saves, backups and bookmarks to `.cache` directory
+;; Configure features to use `.cache` directory
 (setq
  auto-save-list-file-prefix "~/.cache/emacs/auto-save/"
  auto-save-file-name-transforms '((".*" "~/.cache/emacs/auto-save/" t))
  backup-by-copying t
  backup-directory-alist '((".*" . "~/.cache/emacs/backup/"))
  bookmark-default-file "~/.cache/emacs/bookmarks"
- create-lockfiles nil)
-
-;; Configure TRAMP
+ create-lockfiles nil
+ eshell-directory-name "~/.cache/emacs/eshell"
+ treesit-extra-load-path '("~/.cache/emacs/tree-sitter"))
 (with-eval-after-load 'tramp-cache
   (setq tramp-persistency-file-name "~/.cache/emacs/tramp"))
-
-;; Configure Tree-Sitter
-(setq treesit-extra-load-path '("~/.cache/emacs/tree-sitter"))
 
 ;; Configure package management
 (require 'package)
