@@ -34,6 +34,12 @@
   (transient-values-file "~/.cache/emacs/transient/values.el")
   (transient-history-file "~/.cache/emacs/transient/history.el"))
 
+(use-package markdown-mode
+  :hook
+  (gfm-mode . flyspell-mode)
+  :config
+  (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode)))
+
 (use-package projectile
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -42,6 +48,8 @@
   (projectile-project-search-path '(("~/Developer/" . 2)))
   :config
   (projectile-mode +1))
+
+(use-package rg)
 
 ;;;
 ;;; Ocaml
