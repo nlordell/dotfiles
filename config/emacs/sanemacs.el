@@ -39,7 +39,7 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq package-archive-priorities '(("gnu" . 1) ("nongnu" . 1) ("melpa" . 0)))
-(require 'use-package)
+(require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
 ;; Install standard packages

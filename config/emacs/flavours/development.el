@@ -1,5 +1,15 @@
 ;;; -*- lexical-binding: t -*-
 
+;;;
+;;; General
+;;;
+
+(use-package eglot
+  :ensure nil
+  :bind
+  (:map eglot-mode-map
+		("C-c M-q" . eglot-format-buffer)))
+
 (use-package ligature
   :hook
   (prog-mode . ligature-mode)
