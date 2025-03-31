@@ -14,7 +14,7 @@
    Allows initialization and customization differentiation with a
    shared .emacs."
   :type '(choice (const :tag "Plain" plain)
-				 (const :tag "Development" development))
+                 (const :tag "Development" development))
   :group 'convenience)
 
 (when (eq system-flavour 'development)
@@ -24,4 +24,4 @@
 
 (let ((local-init "~/.config/emacs/local-init.el"))
   (when (file-exists-p local-init)
-	(load local-init nil t)))
+    (load local-init nil t)))

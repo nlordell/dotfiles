@@ -17,7 +17,7 @@
  sentence-end-double-space nil)
 (setq-default
  cursor-type 'bar
- indent-tab-mode nil
+ indent-tabs-mode nil
  show-trailing-whitespace t
  tab-width 4)
 (load-theme 'modus-vivendi)
