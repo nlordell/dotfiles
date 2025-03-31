@@ -8,7 +8,7 @@
   :ensure nil
   :bind
   (:map eglot-mode-map
-		("C-c M-q" . eglot-format-buffer)))
+		("M-q" . eglot-format)))
 
 (use-package ligature
   :hook
