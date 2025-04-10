@@ -48,7 +48,7 @@
 (use-package markdown-mode
   :hook
   (gfm-mode . flyspell-mode)
-  :config
+  :init
   (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode)))
 
 (use-package projectile
