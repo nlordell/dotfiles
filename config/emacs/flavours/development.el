@@ -48,6 +48,7 @@
 (use-package markdown-mode
   :hook
   (gfm-mode . flyspell-mode)
+  (gfm-mode . visual-line-mode)
   :init
   (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode)))
 
