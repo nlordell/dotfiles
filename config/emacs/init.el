@@ -4,7 +4,9 @@
 ;; 1. Emacs over devcontainers/docker with TRAMP
 ;;    <https://happihacking.com/blog/posts/2023/dev-containers-emacs/>
 ;; 2. Setup LLM coding: gptel, aidermacs
-;; 3. Try out neocaml - tree-sitter based
+;; 3. Try out neocaml - tree-sitter based OCaml mode
+;; 4. Take some stuff from Emacs NANO
+;;    <https://github.com/rougier/nano-emacs>
 
 (load "~/.config/emacs/sanemacs.el" nil t)
 

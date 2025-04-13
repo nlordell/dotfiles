@@ -56,6 +56,9 @@
   :config
   (global-undo-tree-mode +1))
 
+;; Custom keybinds
+(keymap-global-set "C-x k" #'kill-current-buffer)
+
 ;; Use separate file for custom variables
 (setq custom-file "~/.cache/emacs/custom.el")
 (unless (file-exists-p custom-file)
