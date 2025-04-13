@@ -21,6 +21,10 @@
  show-trailing-whitespace t
  tab-width 4)
 (load-theme 'modus-vivendi)
+(defun sanemacs/hide-trailing-whitespace ()
+  "Hides trailing whitespace for the current buffer."
+  (setq show-trailing-whitespace nil))
+(add-hook 'Buffer-menu-mode-hook #'sanemacs/hide-trailing-whitespace)
 
 ;; Configure features to use `.cache` directory
 (setq
