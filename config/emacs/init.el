@@ -1,14 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 
 ;;; TODO(nlordell):
-;; 1. Emacs over devcontainers/docker with TRAMP
+;; 1. Emacs over TRAMP with `flatpak-spawn --host podman`
 ;;    <https://happihacking.com/blog/posts/2023/dev-containers-emacs/>
 ;; 2. Setup LLM coding: gptel, aidermacs
 ;; 3. Try out neocaml - tree-sitter based OCaml mode
 ;; 4. Take some stuff from Emacs NANO
 ;;    <https://github.com/rougier/nano-emacs>
-
-(load "~/.config/emacs/sanemacs.el" nil t)
 
 (defcustom system-flavour 'plain
   "The flavour of system.
@@ -19,11 +17,18 @@
                  (const :tag "Development" development))
   :group 'convenience)
 
-(when (eq system-flavour 'development)
-  (load "~/.config/emacs/flavours/development.el" nil t))
-(when (eq system-type 'darwin)
-  (load "~/.config/emacs/flavours/macos.el" nil t))
+(defun init/load (name &rest kargs)
+  "Loads an init file."
+  (let* ((init-directory (file-name-directory (or load-file-name (buffer-file-name))))
+         (file-name (file-name-concat init-directory name))
+         (is-optional (plist-get kargs :optional))
+         (should-load (or (not is-optional) (file-exists-p file-name))))
+    (when should-load
+      (load file-name nil t))))
 
-(let ((local-init "~/.config/emacs/local-init.el"))
-  (when (file-exists-p local-init)
-    (load local-init nil t)))
+(init/load "sanemacs.el")
+(when (eq system-flavour 'development)
+  (init/load "flavours/development.el"))
+(when (eq system-type 'darwin)
+  (init/load "flavours/macos.el"))
+(init/load "local-init.el" :optional t)
