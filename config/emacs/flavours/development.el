@@ -4,6 +4,15 @@
 ;;; General
 ;;;
 
+(use-package copilot
+  :custom
+  (copilot-install-dir "~/.cache/emacs/copilot")
+  :bind (("C-<tab>" . copilot-accept-completion)
+         ("C-M-<tab>" . copilot-accept-completion-by-word)
+         ("C-c a a" . copilot-mode)
+         ("C-c a n" . copilot-next-completion)
+         ("C-c a p" . copilot-previous-completion)))
+
 (use-package eglot
   :ensure nil
   :bind
