@@ -47,6 +47,10 @@
   (interactive)
   (find-file custom-file))
 
+(defun init/dev ()
+  "Returns whether or not this configuration is for the `development' flavour."
+  (eq init/system-flavour 'development))
+
 ;;; -- Emacs Configuration --
 
 ;; Mostly adapted from `sanemacs.el', and ported to a `use-package'
@@ -142,43 +146,25 @@
 ;;; -- General Development --
 
 (use-package ligature
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t
   :hook
   (prog-mode . ligature-mode)
   :config
   (ligature-set-ligatures
    'prog-mode
-   '(;; Group A
-     ".." ".=" "..." "..<" "::" ":::" ":=" "::=" ";;" ";;;" "??" "???" ".?" "?."
-     ":?" "?:" "?=" "**" "***" "/*" "*/" "/**"
-     ;; Group B
-     "<-" "->" "-<" ">-" "<--" "-->" "<<-" "->>" "-<<" ">>-" "<-<" ">->" "<-|"
-     "|->" "-|" "|-" "||-" "<!--" "<#--" "<=" "=>" ">=" "<==" "==>" "<<=" "=>>"
-     "=<<" ">>=" "<=<" ">=>" "<=|" "|=>" "<=>" "<==>" "||=" "|=" "//=" "/="
-     "/=="
-     ;; Group C
-     "<<" ">>" "<<<" ">>>" "<>" "<$" "$>" "<$>" "<+" "+>" "<+>" "<:" ":<" "<:<"
-     ">:" ":>" "<~" "~>" "<~>" "<<~" "<~~" "~~>" "~~" "<|" "|>" "<|>" "<||"
-     "||>" "<|||" "|||>" "</" "/>" "</>" "<*" "*>" "<*>" ":?>"
-     ;; Group D
-     "#(" "#{" "#[" "]#" "#!" "#?" "#=" "#_" "#_(" "##" "###" "####"
-     ;; Group E
-     "[|" "|]" "[<" ">]" "{!!" "!!}" "{|" "|}" "{{" "}}" "{{--" "--}}" "{!--"
-     "//" "///" "!!"
-     ;; Group F
-     "www" "@_" "&&" "&&&" "&=" "~@" "++" "+++" "/\\" "\\/" "_|_" "||"
-     ;; Group G
-     "=:" "=:=" "=!=" "==" "===" "=/=" "=~" "~-" "^=" "__" "!=" "!==" "-~" "--"
-     "---")))
+   '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-" "->" "-->"
+     "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</" "/>" "</>" "#(" "#{"
+     "#[" "#!" "##" "###" "####" "[|" "|]" "[<" ">]" "{|" "|}" "{{" "}}" "//"
+     "///" "&&" "++" "||" "==" "===" "=~" "~-" "__" "!=" "!==" "--" "---")))
 
 (use-package magit
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t
   :bind (("C-x g" . magit-status)))
 
 (use-package projectile
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t
   :bind-keymap ("C-c p" . projectile-command-map)
   :custom
@@ -187,13 +173,13 @@
   (projectile-mode +1))
 
 (use-package rg
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t)
 
 ;;; -- Miscellaneous --
 
 (use-package markdown-mode
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t
   :hook
   (gfm-mode . flyspell-mode)
@@ -202,23 +188,32 @@
   (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode)))
 
 (use-package dockerfile-mode
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t)
 
 ;;; -- OCaml --
 
 (use-package tuareg
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t)
 
 (use-package ocaml-eglot
-  :if (eq init/system-flavour 'development)
+  :if (init/dev)
   :ensure t
   :after (tuareg)
   :bind (("M-q" . eglot-format))
   :hook
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure))
+
+;;; -- Rust --
+
+(use-package rust-ts-mode
+  :if (init/dev)
+  :mode "\\.rs\\'"
+  :bind (("M-q" . eglot-format))
+  :hook
+  (rust-ts-mode . eglot-ensure))
 
 (provide 'init)
 ;;; init.el ends here.
