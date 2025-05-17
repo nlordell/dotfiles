@@ -73,6 +73,12 @@
 (use-package rg)
 
 ;;;
+;;; Docker
+;;;
+
+(use-package dockerfile-mode)
+
+;;;
 ;;; Ocaml
 ;;;
 
