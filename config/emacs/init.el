@@ -123,15 +123,15 @@
 (use-package exec-path-from-shell
   :if (eq system-type 'darwin)
   :ensure t
-  :init
+  :config
   (exec-path-from-shell-initialize))
 
 (use-package undo-tree
   :ensure t
-  :init
-  (global-undo-tree-mode +1)
   :custom
-  (undo-tree-auto-save-history nil))
+  (undo-tree-auto-save-history nil)
+  :config
+  (global-undo-tree-mode +1))
 
 ;;; -- LLM --
 
@@ -153,10 +153,11 @@
   :config
   (ligature-set-ligatures
    'prog-mode
-   '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-" "->" "-->"
-     "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</" "/>" "</>" "#(" "#{"
-     "#[" "#!" "##" "###" "####" "[|" "|]" "[<" ">]" "{|" "|}" "{{" "}}" "//"
-     "///" "&&" "++" "||" "==" "===" "=~" "~-" "__" "!=" "!==" "--" "---")))
+   '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-"
+     "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
+     "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
+     ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
+     "=~" "~-" "__" "!=" "!==" "--" "---")))
 
 (use-package magit
   :if (init/dev)
@@ -174,28 +175,34 @@
 
 (use-package rg
   :if (init/dev)
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;;; -- Miscellaneous --
+
+(use-package dockerfile-mode
+  :if (init/dev)
+  :ensure t
+  :mode "[/\\]Dockerfile")
 
 (use-package markdown-mode
   :if (init/dev)
   :ensure t
+  :mode "\\.md\\'"
   :hook
   (gfm-mode . flyspell-mode)
   (gfm-mode . visual-line-mode)
   :init
   (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode)))
 
-(use-package dockerfile-mode
-  :if (init/dev)
-  :ensure t)
-
 ;;; -- OCaml --
 
 (use-package tuareg
   :if (init/dev)
-  :ensure t)
+  :ensure t
+  :mode (("\\.mli?\\'" . tuareg-mode)
+         ("\\.opam\\'" . tuareg-opam-mode)
+         ("\\.mly\\'" . tuareg-menhir-mode)))
 
 (use-package ocaml-eglot
   :if (init/dev)
