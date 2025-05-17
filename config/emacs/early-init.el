@@ -1,19 +1,13 @@
-;;; -*- lexical-binding: t -*-
+;;; early-init.el --- Emacs early initialization -*- lexical-binding: t -*-
 
-;; Go VROOM-VROOM
-(setq gc-cons-threshold 10000000)
+;;; Commentary:
 
-;; Setup the cache directory nice and early; we use it everywhere
-(make-directory "~/.cache/emacs" t)
+;; Early initialization configuration. Right now, it just increases
+;; the `gc-cons-threshold' in order to speed up initialization.
 
-;; Configure package.el directories
-(setq
- package-user-dir "~/.cache/emacs/elpa/"
- package-gnupghome-dir "~/.cache/emacs/elpa/gnupg")
+;;; Code:
 
-;; Configure native-comp cache direactory
-(when (boundp 'native-comp-eln-load-path)
-  (startup-redirect-eln-cache "~/.cache/emacs/eln-cache"))
+(setq gc-cons-threshold 104857600)
 
-;; Suppress native-comp warnings on startup
-(setq warning-suppress-log-types '((comp) (bytecomp)))
+(provide 'early-init)
+;;; early-init.el ends here

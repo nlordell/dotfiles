@@ -1,0 +1,10 @@
+# Emacs tends to put **A LOT** of packages in the `emacs-user-directory` (i.e.
+# `.emacs.d` or `~/.config/emacs`). At first, I tried to fight it by adding
+# various configurations to put those files in `~/.cache/emacs` but decided that
+# it was a Sisyphean task. Instead, we make `.gitignore` everything but the
+# actual configuration files.
+
+*
+!/.gitignore
+!/early-init.el
+!/init.el
