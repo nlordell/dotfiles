@@ -37,6 +37,10 @@
   "Show trailing whitespace for the current buffer."
   (setq show-trailing-whitespace t))
 
+(defun init/auto-save-directory ()
+  "The auto-save directory where the save file lives."
+  (file-name-directory (concat auto-save-list-file-prefix "1-localhost")))
+
 (defun init/open-init ()
   "Opens the Emacs init.el configuration file."
   (interactive)
@@ -87,6 +91,7 @@
   (tab-width 2)
   (backup-by-copying t)
   (backup-directory-alist `((".*" . ,(init/expand-file-name "backup"))))
+  (auto-save-file-name-transforms `((".*" ,(init/auto-save-directory) t)))
   (create-lockfiles nil)
   (tab-width 4)
   (custom-file (init/expand-file-name "local-init.el")))
