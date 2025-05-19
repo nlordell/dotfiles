@@ -150,6 +150,10 @@
 
 ;;; -- General Development --
 
+(use-package eglot
+  :bind (:map eglot-mode-map
+         ("M-q" . eglot-format)))
+
 (use-package ligature
   :if (init/dev)
   :ensure t
@@ -213,7 +217,6 @@
   :if (init/dev)
   :ensure t
   :after (tuareg)
-  :bind (("M-q" . eglot-format))
   :hook
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure))
@@ -223,7 +226,6 @@
 (use-package rust-ts-mode
   :if (init/dev)
   :mode "\\.rs\\'"
-  :bind (("M-q" . eglot-format))
   :hook
   (rust-ts-mode . eglot-ensure))
 
