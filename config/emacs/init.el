@@ -23,8 +23,15 @@
 
    Allows initialization and customization differentiation with a
    shared .emacs."
+  :tag "System Flavour"
   :type '(choice (const :tag "Plain" plain)
                  (const :tag "Development" development))
+  :group 'convenience)
+
+(defcustom init/journal-file "~/Documents/Journal.org"
+  "The path to my journal file."
+  :tag "Journal File"
+  :type '(string)
   :group 'convenience)
 
 ;;; -- Utility Functions --
@@ -51,6 +58,11 @@
   (interactive)
   (find-file custom-file))
 
+(defun init/open-journal ()
+  "Opens my journal."
+  (interactive)
+  (find-file init/journal-file))
+
 (defun init/dev ()
   "Returns whether or not this configuration is for the `development' flavour."
   (eq init/system-flavour 'development))
@@ -64,6 +76,7 @@
          (before-save . delete-trailing-whitespace))
   :bind (("C-c ," . init/open-local-init)
          ("C-c C-," . init/open-init)
+         ("C-c C-j" . init/open-journal)
          ("C-x k" . kill-current-buffer)
          ("M-/" . hippie-expand))
   :init
@@ -92,6 +105,35 @@
   (create-lockfiles nil)
   (tab-width 4)
   (custom-file (init/expand-file-name "local-init.el")))
+
+;;; -- Built-ins --
+
+(use-package c-ts-mode
+  :mode "\\.[ch]\\'")
+
+(use-package eglot
+  :bind (:map eglot-mode-map
+         ("M-q" . eglot-format)))
+
+(use-package js-ts-mode
+  :mode "\\.m?js\\'"
+  :custom
+  (js-indent-level 2))
+
+(use-package rust-ts-mode
+  :mode "\\.rs\\'"
+  :hook
+  (rust-ts-mode . eglot-ensure))
+
+(use-package typescript-ts-mode
+  :mode "\\.tsx?\\'"
+  :custom
+  (typescript-ts-mode-indent-offset 2))
+
+(use-package xref
+  :config
+  (when (executable-find "rg")
+    (setq xref-search-program 'ripgrep)))
 
 ;;; -- Packages --
 
@@ -132,11 +174,6 @@
   :config
   (global-undo-tree-mode +1))
 
-(use-package xref
-  :config
-  (when (executable-find "rg")
-    (setq xref-search-program 'ripgrep)))
-
 ;;; -- LLM --
 
 (use-package copilot
@@ -149,10 +186,6 @@
          ("C-c a p" . copilot-previous-completion)))
 
 ;;; -- General Development --
-
-(use-package eglot
-  :bind (:map eglot-mode-map
-         ("M-q" . eglot-format)))
 
 (use-package ligature
   :if (init/dev)
@@ -173,24 +206,6 @@
   :ensure t
   :bind (("C-x g" . magit-status)))
 
-;;; -- Miscellaneous --
-
-(use-package dockerfile-mode
-  :if (init/dev)
-  :ensure t
-  :mode "[/\\]Dockerfile")
-
-(use-package markdown-mode
-  :if (init/dev)
-  :ensure t
-  :mode "\\.md\\'"
-  :hook
-  (gfm-mode . flyspell-mode)
-  (gfm-mode . visual-line-mode)
-  (gfm-mode . init/show-trailing-whitespace)
-  :init
-  (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode)))
-
 ;;; -- OCaml --
 
 (use-package tuareg
@@ -208,27 +223,31 @@
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure))
 
-;;; -- Rust --
+;;; -- Solidity --
 
-(use-package rust-ts-mode
+(if (file-directory-p "~/Developer/nlordell/sol-mode")
+    (use-package sol-mode
+      :load-path "~/Developer/nlordell/sol-mode"
+      :mode "\\.sol\\'")
+  (use-package sol-mode
+    :ensure t
+    :mode "\\.sol\\'"))
+
+;;; -- Miscellaneous --
+
+(use-package dockerfile-mode
   :if (init/dev)
-  :mode "\\.rs\\'"
+  :ensure t
+  :mode "[/\\]Dockerfile")
+
+(use-package markdown-mode
+  :if (init/dev)
+  :ensure t
+  :mode ("\\.md\\'" . gfm-mode)
   :hook
-  (rust-ts-mode . eglot-ensure))
-
-;;; -- ECMAScript --
-
-(use-package js-ts-mode
-  :if (init/dev)
-  :mode "\\.m?js\\'"
-  :custom
-  (js-indent-level 2))
-
-(use-package typescript-ts-mode
-  :if (init/dev)
-  :mode "\\.tsx?\\'"
-  :custom
-  (typescript-ts-mode-indent-offset 2))
+  (gfm-mode . flyspell-mode)
+  (gfm-mode . visual-line-mode)
+  (gfm-mode . init/show-trailing-whitespace))
 
 (provide 'init)
 ;;; init.el ends here.
