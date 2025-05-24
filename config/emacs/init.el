@@ -57,14 +57,11 @@
 
 ;;; -- Emacs Configuration --
 
-;; Mostly adapted from `sanemacs.el', and ported to a `use-package'
-;; section.
-
 (use-package emacs
   :hook ((prog-mode . completion-preview-mode)
          (prog-mode . display-line-numbers-mode)
          (prog-mode . init/show-trailing-whitespace)
-         (before-safe . delete-trailing-whitespace))
+         (before-save . delete-trailing-whitespace))
   :bind (("C-c ," . init/open-local-init)
          ("C-c C-," . init/open-init)
          ("C-x k" . kill-current-buffer)
@@ -113,9 +110,6 @@
 
 ;;; -- Prelude --
 
-;; Some useful packages taken from `prelude.el' that just generally
-;; enhance Emacs editing.
-
 (use-package ace-window
   :ensure t
   :bind (("C-x o" . ace-window)))
@@ -138,9 +132,15 @@
   :config
   (global-undo-tree-mode +1))
 
+(use-package xref
+  :config
+  (when (executable-find "rg")
+    (setq xref-search-program 'ripgrep)))
+
 ;;; -- LLM --
 
 (use-package copilot
+  :if (init/dev)
   :ensure t
   :bind (("C-<tab>" . copilot-accept-completion)
          ("C-M-<tab>" . copilot-accept-completion-by-word)
@@ -173,20 +173,6 @@
   :ensure t
   :bind (("C-x g" . magit-status)))
 
-(use-package projectile
-  :if (init/dev)
-  :ensure t
-  :bind-keymap ("C-c p" . projectile-command-map)
-  :custom
-  (projectile-project-search-path '(("~/Developer/" . 2)))
-  :config
-  (projectile-mode +1))
-
-(use-package rg
-  :if (init/dev)
-  :ensure t
-  :defer t)
-
 ;;; -- Miscellaneous --
 
 (use-package dockerfile-mode
@@ -201,6 +187,7 @@
   :hook
   (gfm-mode . flyspell-mode)
   (gfm-mode . visual-line-mode)
+  (gfm-mode . init/show-trailing-whitespace)
   :init
   (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode)))
 
@@ -228,6 +215,20 @@
   :mode "\\.rs\\'"
   :hook
   (rust-ts-mode . eglot-ensure))
+
+;;; -- ECMAScript --
+
+(use-package js-ts-mode
+  :if (init/dev)
+  :mode "\\.m?js\\'"
+  :custom
+  (js-indent-level 2))
+
+(use-package typescript-ts-mode
+  :if (init/dev)
+  :mode "\\.tsx?\\'"
+  :custom
+  (typescript-ts-mode-indent-offset 2))
 
 (provide 'init)
 ;;; init.el ends here.
