@@ -176,78 +176,76 @@
 
 ;;; -- LLM --
 
-(use-package copilot
-  :if (init/dev)
-  :ensure t
-  :bind (("C-<tab>" . copilot-accept-completion)
-         ("C-M-<tab>" . copilot-accept-completion-by-word)
-         ("C-c a a" . copilot-mode)
-         ("C-c a n" . copilot-next-completion)
-         ("C-c a p" . copilot-previous-completion)))
+(when (init/dev)
+  (use-package copilot
+    :ensure t
+    :bind (("C-<tab>" . copilot-accept-completion)
+           ("C-M-<tab>" . copilot-accept-completion-by-word)
+           ("C-c a a" . copilot-mode)
+           ("C-c a n" . copilot-next-completion)
+           ("C-c a p" . copilot-previous-completion))))
 
 ;;; -- General Development --
 
-(use-package ligature
-  :if (init/dev)
-  :ensure t
-  :hook
-  (prog-mode . ligature-mode)
-  :config
-  (ligature-set-ligatures
-   'prog-mode
-   '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-"
-     "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
-     "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
-     ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
-     "=~" "~-" "__" "!=" "!==" "--" "---")))
+(when (init/dev)
+  (use-package ligature
+    :ensure t
+    :hook
+    (prog-mode . ligature-mode)
+    :config
+    (ligature-set-ligatures
+     'prog-mode
+     '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-"
+       "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
+       "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
+       ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
+       "=~" "~-" "__" "!=" "!==" "--" "---")))
 
-(use-package magit
-  :if (init/dev)
-  :ensure t
-  :bind (("C-x g" . magit-status)))
+  (use-package magit
+    :ensure t
+    :bind (("C-x g" . magit-status))))
 
 ;;; -- OCaml --
 
-(use-package tuareg
-  :if (init/dev)
-  :ensure t
-  :mode (("\\.mli?\\'" . tuareg-mode)
-         ("\\.opam\\'" . tuareg-opam-mode)
-         ("\\.mly\\'" . tuareg-menhir-mode)))
+(when (init/dev)
+  (use-package tuareg
+    :ensure t
+    :mode (("\\.mli?\\'" . tuareg-mode)
+           ("\\.opam\\'" . tuareg-opam-mode)
+           ("\\.mly\\'" . tuareg-menhir-mode)))
 
-(use-package ocaml-eglot
-  :if (init/dev)
-  :ensure t
-  :after (tuareg)
-  :hook
-  (tuareg-mode . ocaml-eglot)
-  (ocaml-eglot . eglot-ensure))
+  (use-package ocaml-eglot
+    :ensure t
+    :after (tuareg)
+    :hook
+    (tuareg-mode . ocaml-eglot)
+    (ocaml-eglot . eglot-ensure)))
 
 ;;; -- Solidity --
 
-(if (file-directory-p "~/Developer/nlordell/sol-mode")
+(when (init/dev)
+  (if (file-directory-p "~/Developer/nlordell/sol-mode")
+      (use-package sol-mode
+        :load-path "~/Developer/nlordell/sol-mode"
+        :mode "\\.sol\\'")
     (use-package sol-mode
-      :load-path "~/Developer/nlordell/sol-mode"
-      :mode "\\.sol\\'")
-  (use-package sol-mode
-    :ensure t
-    :mode "\\.sol\\'"))
+      :ensure t
+      :mode "\\.sol\\'")))
 
 ;;; -- Miscellaneous --
 
-(use-package dockerfile-mode
-  :if (init/dev)
-  :ensure t
-  :mode "[/\\]Dockerfile")
+(when (init/dev)
+  (use-package dockerfile-mode
+    :ensure t
+    :mode "[/\\]Dockerfile")
 
-(use-package markdown-mode
-  :if (init/dev)
-  :ensure t
-  :mode ("\\.md\\'" . gfm-mode)
-  :hook
-  (gfm-mode . flyspell-mode)
-  (gfm-mode . visual-line-mode)
-  (gfm-mode . init/show-trailing-whitespace))
+  (use-package markdown-mode
+    :ensure t
+    :mode ("\\.md\\'" . gfm-mode)
+    :hook
+    (gfm-mode . flyspell-mode)
+    (gfm-mode . visual-line-mode)
+    (gfm-mode . init/show-trailing-whitespace)))
 
 (provide 'init)
 ;;; init.el ends here.
