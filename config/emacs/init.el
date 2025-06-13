@@ -7,11 +7,9 @@
 
 ;;; TODO:
 
-;; 1. Emacs over TRAMP with `flatpak-spawn --host podman`
-;;    <https://happihacking.com/blog/posts/2023/dev-containers-emacs/>
-;; 2. Setup LLM coding: gptel, aidermacs
-;; 3. Try out neocaml - tree-sitter based OCaml mode
-;; 4. Take some stuff from Emacs NANO
+;; 1. Setup LLM coding: gptel, aidermacs
+;; 2. Try out neocaml - tree-sitter based OCaml mode
+;; 3. Take some stuff from Emacs NANO
 ;;    <https://github.com/rougier/nano-emacs>
 
 ;;; Code:
@@ -87,7 +85,6 @@
   (column-number-mode +1)
   (delete-selection-mode +1)
   (global-auto-revert-mode +1)
-  (load-theme 'modus-vivendi)
   (load (init/expand-file-name "local-init.el") t t)
   :custom
   (use-short-answers t)
@@ -119,6 +116,10 @@
   :mode "\\.m?js\\'"
   :custom
   (js-indent-level 2))
+
+(use-package modus-themes
+  :config
+  (load-theme 'modus-vivendi t))
 
 (use-package rust-ts-mode
   :mode "\\.rs\\'"
