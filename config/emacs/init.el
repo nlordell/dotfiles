@@ -80,7 +80,8 @@
   :init
   (menu-bar-mode -1)
   (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  (when (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
   (which-key-mode +1)
   (column-number-mode +1)
   (delete-selection-mode +1)
