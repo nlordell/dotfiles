@@ -102,6 +102,7 @@
   (auto-save-file-name-transforms `((".*" ,(init/auto-save-directory) t)))
   (create-lockfiles nil)
   (tab-width 4)
+  (load-theme 'modus-vivendi)
   (custom-file (init/expand-file-name "local-init.el")))
 
 ;;; -- Built-ins --
@@ -117,10 +118,6 @@
   :mode "\\.m?js\\'"
   :custom
   (js-indent-level 2))
-
-(use-package modus-themes
-  :config
-  (load-theme 'modus-vivendi t))
 
 (use-package rust-ts-mode
   :mode "\\.rs\\'"
@@ -175,6 +172,13 @@
   (undo-tree-auto-save-history nil)
   :config
   (global-undo-tree-mode +1))
+
+(use-package spacious-padding
+  :ensure t
+  :custom
+  (spacious-padding-subtle-mode-line t)
+  :config
+  (spacious-padding-mode +1))
 
 ;;; -- LLM --
 
