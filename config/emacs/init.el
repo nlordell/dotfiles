@@ -86,6 +86,7 @@
   (column-number-mode +1)
   (delete-selection-mode +1)
   (global-auto-revert-mode +1)
+  (load-theme 'modus-vivendi)
   (load (init/expand-file-name "local-init.el") t t)
   :custom
   (use-short-answers t)
@@ -102,7 +103,6 @@
   (auto-save-file-name-transforms `((".*" ,(init/auto-save-directory) t)))
   (create-lockfiles nil)
   (tab-width 4)
-  (load-theme 'modus-vivendi)
   (custom-file (init/expand-file-name "local-init.el")))
 
 ;;; -- Built-ins --
