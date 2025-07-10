@@ -134,6 +134,12 @@
   (when (executable-find "rg")
     (setq xref-search-program 'ripgrep)))
 
+(when (init/dev)
+  (use-package project
+    :config
+    (add-to-list 'project-switch-commands
+                 '(magit-project-status "Magit" "m") t)))
+
 ;;; -- Packages --
 
 ;; Enable MELPA, but make it a lower priority to GNU and non-GNU ELPA
