@@ -134,11 +134,10 @@
   (when (executable-find "rg")
     (setq xref-search-program 'ripgrep)))
 
-(when (init/dev)
-  (use-package project
-    :config
-    (add-to-list 'project-switch-commands
-                 '(magit-project-status "Magit" "m") t)))
+(use-package project
+  :config
+  (add-to-list 'project-switch-commands
+               '(magit-project-status "Magit" "m") t))
 
 ;;; -- Packages --
 
@@ -171,6 +170,10 @@
   :ensure t
   :config
   (exec-path-from-shell-initialize))
+
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status)))
 
 (use-package undo-tree
   :ensure t
@@ -211,11 +214,7 @@
        "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
        "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
        ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
-       "=~" "~-" "__" "!=" "!==" "--" "---")))
-
-  (use-package magit
-    :ensure t
-    :bind (("C-x g" . magit-status))))
+       "=~" "~-" "__" "!=" "!==" "--" "---"))))
 
 ;;; -- OCaml --
 
