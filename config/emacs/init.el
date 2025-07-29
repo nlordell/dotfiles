@@ -65,6 +65,16 @@
   "Returns whether or not this configuration is for the `development' flavour."
   (eq init/system-flavour 'development))
 
+(defun init/project-remember ()
+  "Remember all projects under `~/Developer'"
+  (interactive)
+  (dolist (file (directory-files-and-attributes
+                 "~/Developer" t directory-files-no-dot-files-regexp))
+    (let ((name (car file))
+          (is-dir (eq (cadr file) t)))
+      (when is-dir
+        (project-remember-projects-under name)))))
+
 ;;; -- Emacs Configuration --
 
 (use-package emacs
@@ -75,6 +85,7 @@
   :bind (("C-c ," . init/open-local-init)
          ("C-c C-," . init/open-init)
          ("C-c C-j" . init/open-journal)
+         ("C-c C-p" . init/project-remember)
          ("C-x k" . kill-current-buffer)
          ("M-/" . hippie-expand))
   :init
