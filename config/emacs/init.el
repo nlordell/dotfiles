@@ -97,7 +97,7 @@
   (column-number-mode +1)
   (delete-selection-mode +1)
   (global-auto-revert-mode +1)
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-vivendi t)
   (load (init/expand-file-name "local-init.el") t t)
   :custom
   (use-short-answers t)
