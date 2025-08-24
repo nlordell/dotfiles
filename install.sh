@@ -33,6 +33,7 @@ mkdir -p "$HOME/.config"
 
 dotlink "config/emacs"
 dotlink "config/nvim"
+dotlink "config/vim"
 gitinst \
 	"wbthomason/packer.nvim" \
 	".local/share/nvim/site/pack/packer/start/packer.nvim"

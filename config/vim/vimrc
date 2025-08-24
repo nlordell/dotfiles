@@ -1,5 +1,8 @@
-set rtp+=/opt/homebrew/opt/fzf
+set nocompatible
 
+set swapfile directory=~/.cache/vim/swap | call mkdir(&directory, "p", 0700)
+set undofile undodir=~/.cache/vim/undo | call mkdir(&undodir, "p", 0700)
+set viminfofile=~/.cache/vim/viminfo
 set number linebreak
 set backspace=indent,eol,start
 set hlsearch incsearch
@@ -9,7 +12,9 @@ set smarttab smartindent autoindent
 set ruler
 set mouse=a
 set ttimeout ttimeoutlen=50
+set list listchars=tab:»\ ,trail:·
 let [&t_SH,&t_SR,&t_SI,&t_EI] .= ["\e[2 q","\e[4 q","\e[6 q","\e[2 q"]
+let g:netrw_home = "~/.cache/vim"
 
 noremap <space> <nop>
 let mapleader = " "
