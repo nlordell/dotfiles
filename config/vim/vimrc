@@ -1,0 +1,18 @@
+set rtp+=/opt/homebrew/opt/fzf
+
+set number linebreak
+set backspace=indent,eol,start
+set hlsearch incsearch
+set ignorecase smartcase
+set shiftwidth=4 tabstop=4
+set smarttab smartindent autoindent
+set ruler
+set mouse=a
+set ttimeout ttimeoutlen=50
+let [&t_SH,&t_SR,&t_SI,&t_EI] .= ["\e[2 q","\e[4 q","\e[6 q","\e[2 q"]
+
+noremap <space> <nop>
+let mapleader = " "
+
+nnoremap <leader>ff <cmd>FZF<cr>
+nnoremap <leader>X <cmd>syntax on<cr>
