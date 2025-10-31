@@ -75,6 +75,18 @@
       (when is-dir
         (project-remember-projects-under name)))))
 
+(defun devbox/magit-status ()
+  "Opens the local Git status for a devbox directory.
+
+If the current buffer is not open in the devbox, then this function just runs
+`magit-status' normally."
+  (interactive)
+  (if (equal (file-remote-p default-directory 'host) "devbox")
+      (let ((local-dir (tramp-file-name-localname
+                        (tramp-dissect-file-name default-directory))))
+        (magit-status-setup-buffer local-dir))
+    (magit-status)))
+
 ;;; -- Emacs Configuration --
 
 (use-package emacs
@@ -184,7 +196,7 @@
 
 (use-package magit
   :ensure t
-  :bind (("C-x g" . magit-status)))
+  :bind (("C-x g" . devbox/magit-status)))
 
 (use-package undo-tree
   :ensure t
@@ -205,8 +217,8 @@
 (when (init/dev)
   (use-package copilot
     :ensure t
-    :bind (("C-<tab>" . copilot-accept-completion)
-           ("C-M-<tab>" . copilot-accept-completion-by-word)
+    :bind (("M-<tab>" . copilot-accept-completion)
+           ("C-<tab>" . copilot-accept-completion-by-word)
            ("C-c a a" . copilot-mode)
            ("C-c a n" . copilot-next-completion)
            ("C-c a p" . copilot-previous-completion))))
