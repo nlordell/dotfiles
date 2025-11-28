@@ -212,17 +212,6 @@ If the current buffer is not open in the devbox, then this function just runs
   :config
   (spacious-padding-mode +1))
 
-;;; -- LLM --
-
-(when (init/dev)
-  (use-package copilot
-    :ensure t
-    :bind (("M-<tab>" . copilot-accept-completion)
-           ("C-<tab>" . copilot-accept-completion-by-word)
-           ("C-c a a" . copilot-mode)
-           ("C-c a n" . copilot-next-completion)
-           ("C-c a p" . copilot-previous-completion))))
-
 ;;; -- General Development --
 
 (when (init/dev)
