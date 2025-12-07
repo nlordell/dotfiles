@@ -11,6 +11,8 @@
 ;; 2. Try out neocaml - tree-sitter based OCaml mode
 ;; 3. Take some stuff from Emacs NANO
 ;;    <https://github.com/rougier/nano-emacs>
+;; 4. Take some stuff from Emacs Bedrock
+;;    <https://codeberg.org/ashton314/emacs-bedrock>
 
 ;;; Code:
 
@@ -226,7 +228,11 @@ If the current buffer is not open in the devbox, then this function just runs
        "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
        "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
        ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
-       "=~" "~-" "__" "!=" "!==" "--" "---"))))
+       "=~" "~-" "__" "!=" "!==" "--" "---")))
+
+  (use-package tramp
+    :config
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
 
 ;;; -- OCaml --
 
