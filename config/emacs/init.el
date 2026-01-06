@@ -5,28 +5,9 @@
 ;; Emacs initialization file. Contains my personal and evolving Emacs
 ;; configuration - what a rabbit hole!
 
-;;; TODO:
-
-;; 1. Setup LLM coding: gptel, aidermacs
-;; 2. Try out neocaml - tree-sitter based OCaml mode
-;; 3. Take some stuff from Emacs NANO
-;;    <https://github.com/rougier/nano-emacs>
-;; 4. Take some stuff from Emacs Bedrock
-;;    <https://codeberg.org/ashton314/emacs-bedrock>
-
 ;;; Code:
 
 ;;; -- Customizations --
-
-(defcustom init/system-flavour 'plain
-  "The flavour of system.
-
-   Allows initialization and customization differentiation with a
-   shared .emacs."
-  :tag "System Flavour"
-  :type '(choice (const :tag "Plain" plain)
-                 (const :tag "Development" development))
-  :group 'convenience)
 
 (defcustom init/journal-file "~/Documents/Journal.org"
   "The path to my journal file."
@@ -42,7 +23,7 @@
 
 (defun init/show-trailing-whitespace ()
   "Show trailing whitespace for the current buffer."
-  (setq show-trailing-whitespace t))
+  (setq-local show-trailing-whitespace t))
 
 (defun init/auto-save-directory ()
   "The auto-save directory where the save file lives."
@@ -63,20 +44,6 @@
   (interactive)
   (find-file init/journal-file))
 
-(defun init/dev ()
-  "Returns whether or not this configuration is for the `development' flavour."
-  (eq init/system-flavour 'development))
-
-(defun init/project-remember ()
-  "Remember all projects under `~/Developer'"
-  (interactive)
-  (dolist (file (directory-files-and-attributes
-                 "~/Developer" t directory-files-no-dot-files-regexp))
-    (let ((name (car file))
-          (is-dir (eq (cadr file) t)))
-      (when is-dir
-        (project-remember-projects-under name)))))
-
 (defun devbox/magit-status ()
   "Opens the local Git status for a devbox directory.
 
@@ -92,31 +59,19 @@ If the current buffer is not open in the devbox, then this function just runs
 ;;; -- Emacs Configuration --
 
 (use-package emacs
-  :hook ((prog-mode . completion-preview-mode)
-         (prog-mode . display-line-numbers-mode)
+  :hook ((prog-mode . display-line-numbers-mode)
          (prog-mode . init/show-trailing-whitespace)
          (before-save . delete-trailing-whitespace))
   :bind (("C-c ," . init/open-local-init)
          ("C-c C-," . init/open-init)
          ("C-c C-j" . init/open-journal)
-         ("C-c C-p" . init/project-remember)
          ("C-x k" . kill-current-buffer)
          ("M-/" . hippie-expand))
-  :init
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (when (fboundp 'scroll-bar-mode)
-    (scroll-bar-mode -1))
-  (which-key-mode +1)
-  (column-number-mode +1)
-  (delete-selection-mode +1)
-  (global-auto-revert-mode +1)
-  (load-theme 'modus-vivendi t)
-  (load (init/expand-file-name "local-init.el") t t)
   :custom
   (use-short-answers t)
   (inhibit-startup-screen t)
   (initial-scratch-message "")
+  (initial-major-mode 'fundamental-mode)
   (frame-title-format '("%b"))
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
@@ -128,41 +83,58 @@ If the current buffer is not open in the devbox, then this function just runs
   (auto-save-file-name-transforms `((".*" ,(init/auto-save-directory) t)))
   (create-lockfiles nil)
   (tab-width 4)
-  (custom-file (init/expand-file-name "local-init.el")))
+  (tab-always-indent 'complete)
+  (completion-styles '(basic initials substring))
+  (auto-revert-avoid-polling t)
+  (auto-revert-remote-files t)
+  (major-mode-remap-alist
+   '((c-mode . c-ts-mode)
+     (javascript-mode . js-ts-mode)
+     (typescript-mode . typescript-ts-mode)))
+  (custom-file (init/expand-file-name "local-init.el"))
+  :init
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (when (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
+  (which-key-mode +1)
+  (savehist-mode +1)
+  (column-number-mode +1)
+  (delete-selection-mode +1)
+  (global-auto-revert-mode +1)
+  (load-theme 'modus-vivendi t)
+  (load (init/expand-file-name "local-init.el") t t)
+  (setq gc-cons-threshold (or init/gc-cons-threshold 800001)))
 
 ;;; -- Built-ins --
 
-(use-package c-ts-mode
-  :mode "\\.[ch]\\'")
+(use-package completion-preview
+  :hook ((prog-mode . completion-preview-mode))
+  :bind (:map completion-preview-active-mode-map
+         ("M-n" . completion-preview-next-candidate)
+         ("M-p" . completion-preview-prev-candidate)))
 
 (use-package eglot
   :bind (:map eglot-mode-map
-         ("M-q" . eglot-format)))
+         ("M-q" . eglot-format))
+  :config
+  (fset #'jsonrpc--log-event #'ignore))
 
-(use-package js-ts-mode
-  :mode "\\.m?js\\'"
+(use-package project
   :custom
-  (js-indent-level 2))
+  (project-mode-line t)
+  :config
+  (add-to-list 'project-switch-commands
+               '(devbox/magit-status "Magit" "m") t))
 
-(use-package rust-ts-mode
-  :mode "\\.rs\\'"
-  :hook
-  (rust-ts-mode . eglot-ensure))
-
-(use-package typescript-ts-mode
-  :mode "\\.tsx?\\'"
-  :custom
-  (typescript-ts-mode-indent-offset 2))
+(use-package tramp
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (use-package xref
   :config
-  (when (executable-find "rg")
-    (setq xref-search-program 'ripgrep)))
-
-(use-package project
-  :config
-  (add-to-list 'project-switch-commands
-               '(magit-project-status "Magit" "m") t))
+  (when (executable-find "grep")
+    (setopt xref-search-program 'ripgrep)))
 
 ;;; -- Packages --
 
@@ -188,7 +160,21 @@ If the current buffer is not open in the devbox, then this function just runs
 (use-package avy
   :ensure t
   :bind (("C-:" . avy-goto-char)
+         ("C-'" . avy-goto-char-timer)
          ("M-g f" . avy-goto-line)))
+
+(use-package corfu
+  :ensure t
+  :hook ((prog-mode . corfu-mode)
+         (corfu-mode . corfu-popupinfo-mode))
+  :bind (:map corfu-map
+         ("SPC" . corfu-insert-separator)
+         ("C-n" . corfu-next)
+         ("C-p" . corfu-previous))
+  :custom
+  (corfu-cycle t)
+  (corfu-popupinfo-delay '(0.25 . 0.1))
+  (corfu-popupinfo-hide nil))
 
 (use-package exec-path-from-shell
   :if (eq system-type 'darwin)
@@ -196,9 +182,10 @@ If the current buffer is not open in the devbox, then this function just runs
   :config
   (exec-path-from-shell-initialize))
 
-(use-package magit
+(use-package marginalia
   :ensure t
-  :bind (("C-x g" . devbox/magit-status)))
+  :config
+  (marginalia-mode +1))
 
 (use-package undo-tree
   :ensure t
@@ -214,67 +201,71 @@ If the current buffer is not open in the devbox, then this function just runs
   :config
   (spacious-padding-mode +1))
 
+(use-package vertico
+  :ensure t
+  :config
+  (vertico-mode +1))
+
 ;;; -- General Development --
 
-(when (init/dev)
-  (use-package ligature
-    :ensure t
-    :hook
-    (prog-mode . ligature-mode)
-    :config
-    (ligature-set-ligatures
-     'prog-mode
-     '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-"
-       "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
-       "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
-       ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
-       "=~" "~-" "__" "!=" "!==" "--" "---")))
+(use-package ligature
+  :ensure t
+  :hook ((prog-mode . ligature-mode))
+  :config
+  (ligature-set-ligatures
+   'prog-mode
+   '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-"
+     "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
+     "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
+     ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
+     "=~" "~-" "__" "!=" "!==" "--" "---")))
 
-  (use-package tramp
-    :config
-    (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . devbox/magit-status)))
 
 ;;; -- OCaml --
 
-(when (init/dev)
-  (use-package tuareg
-    :ensure t
-    :mode (("\\.mli?\\'" . tuareg-mode)
-           ("\\.opam\\'" . tuareg-opam-mode)
-           ("\\.mly\\'" . tuareg-menhir-mode)))
+(use-package tuareg
+  :ensure t
+  :mode (("\\.mli?\\'" . tuareg-mode)
+         ("\\.opam\\'" . tuareg-opam-mode)
+         ("\\.mly\\'" . tuareg-menhir-mode)))
 
-  (use-package ocaml-eglot
-    :ensure t
-    :after (tuareg)
-    :hook
-    (tuareg-mode . ocaml-eglot)
-    (ocaml-eglot . eglot-ensure)))
+(use-package ocaml-eglot
+  :ensure t
+  :after (tuareg)
+  :hook ((tuareg-mode . ocaml-eglot)
+         (ocaml-eglot . eglot-ensure)))
+
+;;; -- Rust --
+
+(use-package rust-ts-mode
+  :mode "\\.rs\\'"
+  :hook ((rust-ts-mode . eglot-ensure)))
 
 ;;; -- Solidity --
 
-(when (init/dev)
-  (if (file-directory-p "~/Developer/nlordell/sol-mode")
-      (use-package sol-mode
-        :load-path "~/Developer/nlordell/sol-mode"
-        :mode "\\.sol\\'")
+(if (file-directory-p "~/Developer/nlordell/sol-mode")
     (use-package sol-mode
-      :ensure t
-      :mode "\\.sol\\'")))
+      :load-path "~/Developer/nlordell/sol-mode"
+      :mode "\\.sol\\'")
+  (use-package sol-mode
+    :ensure t
+    :mode "\\.sol\\'"))
 
 ;;; -- Miscellaneous --
 
-(when (init/dev)
-  (use-package dockerfile-mode
-    :ensure t
-    :mode "[/\\]Dockerfile")
+(use-package dockerfile-mode
+  :ensure t
+  :mode "[/\\]Dockerfile")
 
-  (use-package markdown-mode
-    :ensure t
-    :mode ("\\.md\\'" . gfm-mode)
-    :hook
-    (gfm-mode . flyspell-mode)
-    (gfm-mode . visual-line-mode)
-    (gfm-mode . init/show-trailing-whitespace)))
+(use-package markdown-mode
+  :ensure t
+  :mode ("\\.md\\'" . gfm-mode)
+  :hook ((gfm-mode . flyspell-mode)
+         (gfm-mode . visual-line-mode)
+         (gfm-mode . init/show-trailing-whitespace)))
 
 (provide 'init)
 ;;; init.el ends here.
