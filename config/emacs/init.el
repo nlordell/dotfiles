@@ -65,6 +65,7 @@ If the current buffer is not open in the devbox, then this function just runs
   :bind (("C-c ," . init/open-local-init)
          ("C-c C-," . init/open-init)
          ("C-c C-j" . init/open-journal)
+         ("C-." . completion-at-point)
          ("C-x k" . kill-current-buffer)
          ("M-/" . hippie-expand))
   :custom
@@ -253,6 +254,13 @@ If the current buffer is not open in the devbox, then this function just runs
   (use-package sol-mode
     :ensure t
     :mode "\\.sol\\'"))
+
+;;; -- TypeScript --
+
+(use-package typescript-ts-mode
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode))
+  :hook ((typescript-ts-base-mode . eglot-ensure)))
 
 ;;; -- Miscellaneous --
 
