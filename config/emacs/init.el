@@ -87,7 +87,6 @@ If the current buffer is not open in the devbox, then this function just runs
   (tab-always-indent 'complete)
   (completion-styles '(basic initials substring))
   (auto-revert-avoid-polling t)
-  (auto-revert-remote-files t)
   (major-mode-remap-alist
    '((c-mode . c-ts-mode)
      (javascript-mode . js-ts-mode)
@@ -119,7 +118,9 @@ If the current buffer is not open in the devbox, then this function just runs
   :bind (:map eglot-mode-map
          ("M-q" . eglot-format))
   :config
-  (fset #'jsonrpc--log-event #'ignore))
+  (fset #'jsonrpc--log-event #'ignore)
+  (add-to-list 'eglot-server-programs
+               '(sol-mode . ("nomicfoundation-solidity-language-server" "--stdio"))))
 
 (use-package project
   :custom
@@ -236,14 +237,12 @@ If the current buffer is not open in the devbox, then this function just runs
 (use-package ocaml-eglot
   :ensure t
   :after (tuareg)
-  :hook ((tuareg-mode . ocaml-eglot)
-         (ocaml-eglot . eglot-ensure)))
+  :hook ((ocaml-eglot . eglot-ensure)))
 
 ;;; -- Rust --
 
 (use-package rust-ts-mode
-  :mode "\\.rs\\'"
-  :hook ((rust-ts-mode . eglot-ensure)))
+  :mode "\\.rs\\'")
 
 ;;; -- Solidity --
 
@@ -259,8 +258,7 @@ If the current buffer is not open in the devbox, then this function just runs
 
 (use-package typescript-ts-mode
   :mode (("\\.ts\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode))
-  :hook ((typescript-ts-base-mode . eglot-ensure)))
+         ("\\.tsx\\'" . tsx-ts-mode)))
 
 ;;; -- Miscellaneous --
 
