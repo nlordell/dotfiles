@@ -44,24 +44,22 @@
   (interactive)
   (find-file init/journal-file))
 
-(defun devbox/magit-status ()
-  "Opens the local Git status for a devbox directory.
-
-If the current buffer is not open in the devbox, then this function just runs
-`magit-status' normally."
-  (interactive)
-  (if (equal (file-remote-p default-directory 'host) "devbox")
-      (let ((local-dir (tramp-file-name-localname
-                        (tramp-dissect-file-name default-directory))))
-        (magit-status-setup-buffer local-dir))
-    (magit-status)))
+(defun init/typescript-eglot-settings ()
+  "Configures buffer-local Eglot settings for TypeScript."
+  ;; The TS language server monitors the parent's proces ID and will
+  ;; automatically kill itself if the process ID is no longer there. Since we
+  ;; run tools in containerized environments, we don't want this behaviour:
+  ;; Emacs is running on the host, and its PID is not visible to the container.
+  ;; Tell Eglot to **not** send a process ID, which disables this feature in
+  ;; the TS language server.
+  (setq-local eglot-withhold-process-id t))
 
 ;;; -- Emacs Configuration --
 
 (use-package emacs
-  :hook ((prog-mode . display-line-numbers-mode)
-         (prog-mode . init/show-trailing-whitespace)
-         (before-save . delete-trailing-whitespace))
+  :hook ((before-save . delete-trailing-whitespace)
+         (prog-mode . display-line-numbers-mode)
+         (prog-mode . init/show-trailing-whitespace))
   :bind (("C-c ," . init/open-local-init)
          ("C-c C-," . init/open-init)
          ("C-c C-j" . init/open-journal)
@@ -127,15 +125,11 @@ If the current buffer is not open in the devbox, then this function just runs
   (project-mode-line t)
   :config
   (add-to-list 'project-switch-commands
-               '(devbox/magit-status "Magit" "m") t))
-
-(use-package tramp
-  :config
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+               '(magit-status "Magit" "m") t))
 
 (use-package xref
   :config
-  (when (executable-find "grep")
+  (when (executable-find "rg")
     (setopt xref-search-program 'ripgrep)))
 
 ;;; -- Packages --
@@ -224,7 +218,7 @@ If the current buffer is not open in the devbox, then this function just runs
 
 (use-package magit
   :ensure t
-  :bind (("C-x g" . devbox/magit-status)))
+  :bind (("C-x g" . magit-status)))
 
 ;;; -- OCaml --
 
@@ -258,7 +252,8 @@ If the current buffer is not open in the devbox, then this function just runs
 
 (use-package typescript-ts-mode
   :mode (("\\.ts\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode)))
+         ("\\.tsx\\'" . tsx-ts-mode))
+  :hook ((typescript-ts-mode . init/typescript-eglot-settings)))
 
 ;;; -- Miscellaneous --
 
