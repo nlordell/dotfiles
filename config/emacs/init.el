@@ -125,7 +125,7 @@
   (project-mode-line t)
   :config
   (add-to-list 'project-switch-commands
-               '(magit-status "Magit" "m") t))
+               '(magit-project-status "Magit" "m") t))
 
 (use-package xref
   :config
