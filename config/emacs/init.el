@@ -121,6 +121,17 @@
   (add-to-list 'eglot-server-programs
                '(sol-mode . ("nomicfoundation-solidity-language-server" "--stdio"))))
 
+(use-package flymake
+  :bind (:map flymake-mode-map
+         ("M-n" . flymake-goto-next-error)
+         ("M-p" . flymake-goto-prev-error))
+  :custom
+  (flymake-indicator-type 'margins)
+  (flymake-margin-indicators-string
+   `((error "" compilation-error)
+     (warning "" compilation-warning)
+     (note "" compilation-info))))
+
 (use-package project
   :custom
   (project-mode-line t)
