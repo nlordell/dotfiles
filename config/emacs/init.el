@@ -83,7 +83,6 @@
   (create-lockfiles nil)
   (tab-width 4)
   (tab-always-indent 'complete)
-  (completion-styles '(basic initials substring))
   (auto-revert-avoid-polling t)
   (remote-file-name-inhibit-locks t)
   (major-mode-remap-alist
@@ -199,6 +198,13 @@
   :config
   (marginalia-mode +1))
 
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil))
+
 (use-package undo-tree
   :ensure t
   :custom
@@ -215,6 +221,10 @@
 
 (use-package vertico
   :ensure t
+  :defer nil
+  :bind (:map vertico-map
+         ("TAB" . minibuffer-complete)
+         ("C-<tab>" . vertico-insert))
   :config
   (vertico-mode +1))
 
