@@ -85,6 +85,7 @@
   (tab-always-indent 'complete)
   (completion-styles '(basic initials substring))
   (auto-revert-avoid-polling t)
+  (remote-file-name-inhibit-locks t)
   (major-mode-remap-alist
    '((c-mode . c-ts-mode)
      (javascript-mode . js-ts-mode)
@@ -126,6 +127,10 @@
   :config
   (add-to-list 'project-switch-commands
                '(magit-project-status "Magit" "m") t))
+
+(use-package vc
+  :custom
+  (vc-handled-backends '(Git)))
 
 (use-package xref
   :config
