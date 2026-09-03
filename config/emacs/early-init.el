@@ -7,7 +7,7 @@
 
 ;;; Code:
 
-(setq init/gc-cons-threshold gc-cons-threshold)
+(setq my/gc-cons-threshold gc-cons-threshold)
 (setq gc-cons-threshold 104857600)
 
 (setq byte-compile-warnings '(not obsolete))

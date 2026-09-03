@@ -9,7 +9,7 @@
 
 ;;; -- Customizations --
 
-(defcustom init/journal-file "~/Documents/Journal.org"
+(defcustom my/journal-file "~/Documents/Journal.org"
   "The path to my journal file."
   :tag "Journal File"
   :type '(string)
@@ -17,52 +17,123 @@
 
 ;;; -- Utility Functions --
 
-(defun init/expand-file-name (name)
+(defun my/expand-file-name (name)
   "Expands file NAME relative to the `user-emacs-directory'."
   (expand-file-name name user-emacs-directory))
 
-(defun init/show-trailing-whitespace ()
+(defun my/show-trailing-whitespace ()
   "Show trailing whitespace for the current buffer."
   (setq-local show-trailing-whitespace t))
 
-(defun init/auto-save-directory ()
+(defun my/auto-save-directory ()
   "The auto-save directory where the save file lives."
   (file-name-directory (concat auto-save-list-file-prefix "1-localhost")))
 
-(defun init/open-init ()
+(defun my/open-init ()
   "Opens the Emacs init.el configuration file."
   (interactive)
-  (find-file (init/expand-file-name "init.el")))
+  (find-file (my/expand-file-name "init.el")))
 
-(defun init/open-local-init ()
+(defun my/open-local-init ()
   "Opens the system-specific configuration file."
   (interactive)
   (find-file custom-file))
 
-(defun init/open-journal ()
+(defun my/open-journal ()
   "Opens my journal."
   (interactive)
-  (find-file init/journal-file))
+  (find-file my/journal-file))
 
-(defun init/typescript-eglot-settings ()
-  "Configures buffer-local Eglot settings for TypeScript."
-  ;; The TS language server monitors the parent's proces ID and will
-  ;; automatically kill itself if the process ID is no longer there. Since we
-  ;; run tools in containerized environments, we don't want this behaviour:
-  ;; Emacs is running on the host, and its PID is not visible to the container.
-  ;; Tell Eglot to **not** send a process ID, which disables this feature in
-  ;; the TS language server.
-  (setq-local eglot-withhold-process-id t))
+(defun my/vc-spin-off-branch (new-branch)
+  "Create and switch to a new branch from the current branch."
+  (interactive "sSpin-off new branch: ")
+  (let* ((default-directory (vc-root-dir))
+         (current-branch (string-trim
+                          (vc-git--run-command-string
+                           nil "branch" "--show-current")))
+         (upstream (or (ignore-errors
+                         (string-trim
+                          (vc-git--run-command-string
+                           nil "rev-parse" "--abbrev-ref" "@{upstream}")))
+                       "")))
+    (when (string-empty-p new-branch)
+      (user-error "Branch name cannot be empty"))
+    (when (string-prefix-p "-" new-branch)
+      (user-error "Branch name cannot start with '-'"))
+    (vc-git-command nil 0 nil "checkout" "-b" new-branch)
+    (if (or (string-empty-p current-branch) (string-empty-p upstream))
+        (message "Spun off %s from %s" new-branch
+                 (if (string-empty-p current-branch) "HEAD" current-branch))
+      (condition-case err
+          (let ((merge-base (string-trim
+                             (vc-git--run-command-string
+                              nil "merge-base" current-branch upstream))))
+            (when (not (string-empty-p merge-base))
+              (vc-git-command nil 0 nil "branch" "--force"
+                              current-branch merge-base)
+              (message "Spun off %s from %s; reset %s to merge-base with %s"
+                       new-branch current-branch current-branch upstream)))
+        (error (message "Spun off %s from %s (could not reset %s: %s)"
+                        new-branch current-branch current-branch
+                        (error-message-string err)))))
+    (revert-buffer)))
+
+;(defun my/vc-push-set-upstream ()
+;  "Push the current branch to origin and set it as upstream."
+;  (interactive)
+;  (let* ((default-directory (vc-root-dir))
+;         (branch (string-trim
+;                  (vc-git--run-command-string
+;                   nil "branch" "--show-current"))))
+;    (when (string-empty-p branch)
+;      (user-error "Not on a branch"))
+;    (vc-git-command "*vc-git: push*" 'async nil "push" "-u" "origin" branch)
+;    (pop-to-buffer "*vc-git: push*")
+;    (message "Pushed %s to upstream origin/%s" branch branch)
+;    (revert-buffer)))
+
+(defun my/vc-push-set-upstream ()
+  "Push the current branch to origin and set it as upstream, asynchronously."
+  (interactive)
+  (let* ((default-directory (vc-root-dir))
+         (branch (string-trim
+                  (vc-git--run-command-string
+                   nil "branch" "--show-current")))
+         (buffer-name "*vc-git: push*")
+         (vc-dir-buffer (current-buffer)))
+    (when (string-empty-p branch)
+      (user-error "Not on a branch"))
+    (let ((proc (vc-git-command
+                 buffer-name 'async nil "push" "-u" "origin" branch)))
+      (when (processp proc)
+        (process-put proc 'my-branch branch)
+        (process-put proc 'my-vc-dir-buffer vc-dir-buffer)
+        (set-process-sentinel
+         proc
+         (lambda (proc event)
+           (when (memq (process-status proc) '(exit signal))
+             (let ((status (process-exit-status proc))
+                   (branch (process-get proc 'my-branch))
+                   (vc-dir-buffer (process-get proc 'my-vc-dir-buffer)))
+               (if (eq status 0)
+                   (progn
+                     (message "Pushed %s to upstream origin/%s" branch branch)
+                     (when (buffer-live-p vc-dir-buffer)
+                       (with-current-buffer vc-dir-buffer
+                         (revert-buffer t t))))
+                 (message "Push failed for %s (see %s)"
+                          branch (process-buffer proc))))))))
+      (pop-to-buffer buffer-name))))
 
 ;;; -- Emacs Configuration --
 
 (use-package emacs
   :hook ((before-save . delete-trailing-whitespace)
          (prog-mode . display-line-numbers-mode)
-         (prog-mode . init/show-trailing-whitespace))
-  :bind (("C-c ," . init/open-local-init)
-         ("C-c C-," . init/open-init)
-         ("C-c C-j" . init/open-journal)
+         (prog-mode . my/show-trailing-whitespace))
+  :bind (("C-c ," . my/open-local-init)
+         ("C-c C-," . my/open-init)
+         ("C-c C-j" . my/open-journal)
          ("C-." . completion-at-point)
          ("C-x k" . kill-current-buffer)
          ("M-/" . hippie-expand))
@@ -78,8 +149,8 @@
   (indent-tabs-mode nil)
   (tab-width 2)
   (backup-by-copying t)
-  (backup-directory-alist `((".*" . ,(init/expand-file-name "backup"))))
-  (auto-save-file-name-transforms `((".*" ,(init/auto-save-directory) t)))
+  (backup-directory-alist `((".*" . ,(my/expand-file-name "backup"))))
+  (auto-save-file-name-transforms `((".*" ,(my/auto-save-directory) t)))
   (create-lockfiles nil)
   (tab-width 4)
   (tab-always-indent 'complete)
@@ -89,7 +160,7 @@
    '((c-mode . c-ts-mode)
      (javascript-mode . js-ts-mode)
      (typescript-mode . typescript-ts-mode)))
-  (custom-file (init/expand-file-name "local-init.el"))
+  (custom-file (my/expand-file-name "local-init.el"))
   :init
   (menu-bar-mode -1)
   (tool-bar-mode -1)
@@ -101,10 +172,10 @@
   (delete-selection-mode +1)
   (global-auto-revert-mode +1)
   (load-theme 'modus-vivendi t)
-  (load (init/expand-file-name "local-init.el") t t)
-  (setq gc-cons-threshold (or init/gc-cons-threshold 800001)))
+  (load (my/expand-file-name "local-init.el") t t)
+  (setq gc-cons-threshold (or my/gc-cons-threshold 800001)))
 
-;;; -- Built-ins --
+;;; -- Packages --
 
 (use-package completion-preview
   :hook ((prog-mode . completion-preview-mode))
@@ -117,8 +188,12 @@
          ("M-q" . eglot-format))
   :config
   (fset #'jsonrpc--log-event #'ignore)
-  (add-to-list 'eglot-server-programs
-               '(sol-mode . ("nomicfoundation-solidity-language-server" "--stdio"))))
+  ;; Some language servers monitor their parent's process ID and will
+  ;; automatically kill themselve if the process ID is no longer there. Since
+  ;; we run tools in containerized environments, we don't want this behaviour:
+  ;; Emacs is running on the host, and its PID is not visible to the container.
+  ;; Tell Eglot to **not** send a process ID.
+  (setq eglot-withhold-process-id t))
 
 (use-package flymake
   :bind (:map flymake-mode-map
@@ -127,172 +202,29 @@
   :custom
   (flymake-indicator-type 'margins)
   (flymake-margin-indicators-string
-   `((error "" compilation-error)
-     (warning "" compilation-warning)
-     (note "" compilation-info))))
+   `((error " " compilation-error)
+     (warning " " compilation-warning)
+     (note " " compilation-info))))
 
 (use-package project
   :custom
-  (project-mode-line t)
-  :config
-  (add-to-list 'project-switch-commands
-               '(magit-project-status "Magit" "m") t))
+  (project-mode-line t))
+
+(use-package rust-ts-mode
+  :mode "\\.rs\\'")
 
 (use-package vc
   :custom
   (vc-handled-backends '(Git)))
+(use-package vc-dir
+  :bind (:map vc-dir-mode-map
+              ("C-c s" . my/vc-spin-off-branch)
+              ("C-c P" . my/vc-push-set-upstream)))
 
 (use-package xref
   :config
   (when (executable-find "rg")
     (setopt xref-search-program 'ripgrep)))
-
-;;; -- Packages --
-
-;; Enable MELPA, but make it a lower priority to GNU and non-GNU ELPA
-;; repositories. This makes it so we fallback to MELPA when there are
-;; no stable versions on the official ELPA repositories.
-
-(use-package package
-  :custom
-  (package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-                      ("melpa" . "https://melpa.org/packages/")))
-  (package-archive-priorities '(("gnu" . 1)
-                                ("nongnu" . 1)
-                                ("melpa" . 0))))
-
-;;; -- Prelude --
-
-(use-package ace-window
-  :ensure t
-  :bind (("C-x o" . ace-window)))
-
-(use-package avy
-  :ensure t
-  :bind (("C-:" . avy-goto-char)
-         ("C-'" . avy-goto-char-timer)
-         ("M-g f" . avy-goto-line)))
-
-(use-package corfu
-  :ensure t
-  :hook ((prog-mode . corfu-mode)
-         (corfu-mode . corfu-popupinfo-mode))
-  :bind (:map corfu-map
-         ("SPC" . corfu-insert-separator)
-         ("C-n" . corfu-next)
-         ("C-p" . corfu-previous))
-  :custom
-  (corfu-cycle t)
-  (corfu-popupinfo-delay '(0.25 . 0.1))
-  (corfu-popupinfo-hide nil))
-
-(use-package exec-path-from-shell
-  :if (eq system-type 'darwin)
-  :ensure t
-  :config
-  (exec-path-from-shell-initialize))
-
-(use-package marginalia
-  :ensure t
-  :config
-  (marginalia-mode +1))
-
-(use-package orderless
-  :ensure t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil))
-
-(use-package undo-tree
-  :ensure t
-  :custom
-  (undo-tree-auto-save-history nil)
-  :config
-  (global-undo-tree-mode +1))
-
-(use-package spacious-padding
-  :ensure t
-  :custom
-  (spacious-padding-subtle-mode-line t)
-  :config
-  (spacious-padding-mode +1))
-
-(use-package vertico
-  :ensure t
-  :defer nil
-  :bind (:map vertico-map
-         ("TAB" . minibuffer-complete)
-         ("C-<tab>" . vertico-insert))
-  :config
-  (vertico-mode +1))
-
-;;; -- General Development --
-
-(use-package ligature
-  :ensure t
-  :hook ((prog-mode . ligature-mode))
-  :config
-  (ligature-set-ligatures
-   'prog-mode
-   '(".." "..." "::" ":=" ";;" ";;;" "??" "**" "/*" "*/" "/**" "<-"
-     "->" "-->" "<!--" "<=" "=>" ">=" "<<" ">>" "<>" "<|" "|>" "</"
-     "/>" "</>" "#(" "#{" "#[" "#!" "##" "###" "####" "[|" "|]" "[<"
-     ">]" "{|" "|}" "{{" "}}" "//" "///" "&&" "++" "||" "==" "==="
-     "=~" "~-" "__" "!=" "!==" "--" "---")))
-
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)))
-
-;;; -- OCaml --
-
-(use-package tuareg
-  :ensure t
-  :mode (("\\.mli?\\'" . tuareg-mode)
-         ("\\.opam\\'" . tuareg-opam-mode)
-         ("\\.mly\\'" . tuareg-menhir-mode)))
-
-(use-package ocaml-eglot
-  :ensure t
-  :after (tuareg)
-  :hook ((ocaml-eglot . eglot-ensure)))
-
-;;; -- Rust --
-
-(use-package rust-ts-mode
-  :mode "\\.rs\\'")
-
-;;; -- Solidity --
-
-(if (file-directory-p "~/Developer/nlordell/sol-mode")
-    (use-package sol-mode
-      :load-path "~/Developer/nlordell/sol-mode"
-      :mode "\\.sol\\'")
-  (use-package sol-mode
-    :ensure t
-    :mode "\\.sol\\'"))
-
-;;; -- TypeScript --
-
-(use-package typescript-ts-mode
-  :mode (("\\.ts\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode))
-  :hook ((typescript-ts-mode . init/typescript-eglot-settings)))
-
-;;; -- Miscellaneous --
-
-(use-package dockerfile-mode
-  :ensure t
-  :mode "[/\\]Dockerfile")
-
-(use-package markdown-mode
-  :ensure t
-  :mode ("\\.md\\'" . gfm-mode)
-  :hook ((gfm-mode . flyspell-mode)
-         (gfm-mode . visual-line-mode)
-         (gfm-mode . init/show-trailing-whitespace)))
 
 (provide 'init)
 ;;; init.el ends here.
