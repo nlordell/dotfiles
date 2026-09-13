@@ -78,20 +78,6 @@
                         (error-message-string err)))))
     (revert-buffer)))
 
-;(defun my/vc-push-set-upstream ()
-;  "Push the current branch to origin and set it as upstream."
-;  (interactive)
-;  (let* ((default-directory (vc-root-dir))
-;         (branch (string-trim
-;                  (vc-git--run-command-string
-;                   nil "branch" "--show-current"))))
-;    (when (string-empty-p branch)
-;      (user-error "Not on a branch"))
-;    (vc-git-command "*vc-git: push*" 'async nil "push" "-u" "origin" branch)
-;    (pop-to-buffer "*vc-git: push*")
-;    (message "Pushed %s to upstream origin/%s" branch branch)
-;    (revert-buffer)))
-
 (defun my/vc-push-set-upstream ()
   "Push the current branch to origin and set it as upstream, asynchronously."
   (interactive)
@@ -124,6 +110,33 @@
                  (message "Push failed for %s (see %s)"
                           branch (process-buffer proc))))))))
       (pop-to-buffer buffer-name))))
+
+(defun my/setenv-from-shell (variable)
+  "Set environment VARIABLE from the user's login shell."
+  (let ((shell (getenv "SHELL"))
+        (output ""))
+    (make-process
+     :name (format "setenv-%s" variable)
+     :command `(,shell "-i" "-l" "-c"
+                       ,(format "printf \"%%s\" \"$%s\"" variable))
+     :buffer nil
+     :noquery t
+     :connection-type 'pipe
+     :filter (lambda (_proc chunk)
+               (setq output (concat output chunk)))
+     :sentinel (lambda (proc _event)
+                 (when (eq (process-status proc) 'exit)
+                   (if (not (zerop (process-exit-status proc)))
+                       (message "Failed to get %s from shell (exit %d)"
+                                variable (process-exit-status proc))
+                     (setenv variable output))))
+     ;; We need to ignore `stderr` because starting interactive shells without
+     ;; a proper TTY usually produces some noise.
+     :stderr (make-pipe-process
+              :name (format "setenv-%s-stderr" variable)
+              :noquery t
+              :filter #'ignore
+              :sentinel #'ignore))))
 
 ;;; -- Emacs Configuration --
 
@@ -172,6 +185,7 @@
   (delete-selection-mode +1)
   (global-auto-revert-mode +1)
   (load-theme 'modus-vivendi t)
+  (my/setenv-from-shell "PATH")
   (load (my/expand-file-name "local-init.el") t t)
   (setq gc-cons-threshold (or my/gc-cons-threshold 800001)))
 
