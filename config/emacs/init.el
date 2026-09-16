@@ -220,6 +220,11 @@
      (warning " " compilation-warning)
      (note " " compilation-info))))
 
+(use-package markdown-ts-mode
+  :mode "\\.md\\'"
+  :config
+  (require 'markdown-ts-mode-x))
+
 (use-package project
   :custom
   (project-mode-line t))
